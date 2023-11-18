@@ -50,8 +50,7 @@ namespace HowDoYouFeel.MainMenu
                 positions[i] = origText.rectTransform.anchoredPosition + (Vector2.right * offset);
 
                 CharacterInfo charInf;
-                Debug.Log(font.sourceFontFile.GetCharacterInfo(origText.text[i], out charInf, (int)charSize, FontStyle.Normal));
-                Debug.Log(charInf.advance);
+                font.sourceFontFile.GetCharacterInfo(origText.text[i], out charInf, (int)charSize, FontStyle.Normal);
                 offset += charInf.advance;
             }
 

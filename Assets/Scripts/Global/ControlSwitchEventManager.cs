@@ -14,7 +14,7 @@ namespace HowDoYouFeel.Global
         private void Start()
         {
             input = FindObjectOfType<PlayerInput>();
-            foreach (ControlChangeToggleActive c in FindObjectsOfType<ControlChangeToggleActive>(true))
+            foreach (ControlSwitchToggleActive c in FindObjectsOfType<ControlSwitchToggleActive>(true))
             {
                 if (c.activeOn == ControlSchemeType.Gamepad)
                 {
@@ -36,6 +36,12 @@ namespace HowDoYouFeel.Global
 
         public void OnControlsChanged()
         {
+            if (!GlobalManager.Instance)
+            { 
+                Debug.LogWarning("Tried to reach a non-existent Global Manager. If nothing is broken, this is fine");
+                return; 
+            }
+
             if (input != null) { GlobalManager.Instance.currentControlScheme = input.currentControlScheme; }
 
             if (input == null) { input = FindObjectOfType<PlayerInput>(); }

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using HowDoYouFeel.Global;
 
-namespace HowDoYouFeel.Global
+namespace HowDoYouFeel.UI
 {
     public class VolumeSlider : MonoBehaviour
     {

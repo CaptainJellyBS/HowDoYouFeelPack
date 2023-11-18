@@ -5,7 +5,7 @@ using UnityEngine;
 namespace HowDoYouFeel.Global
 {
     public enum ControlSchemeType { Keyboard, Gamepad }
-    public class ControlChangeToggleActive : MonoBehaviour
+    public class ControlSwitchToggleActive : MonoBehaviour
     {
         public ControlSchemeType activeOn;
 

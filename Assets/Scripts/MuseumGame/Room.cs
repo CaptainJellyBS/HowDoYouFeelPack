@@ -16,9 +16,16 @@ namespace HowDoYouFeel.MuseumGame
 
             int connectionIndex = Random.Range(0, connectionPoints.Length);
 
-            //transform.rotation = Quaternion.FromToRotation(connectionPoints[connectionIndex].forward, doorConnectionPoint.forward); //maybe?
+            //Quaternion dif = Quaternion.Inverse(doorConnectionPoint.rotation) * connectionPoints[connectionIndex].rotation;
+            //transform.rotation = dif * transform.rotation;
+            Quaternion targetRot = doorConnectionPoint.rotation;
+            Quaternion childRot = connectionPoints[connectionIndex].rotation;
+            transform.rotation = transform.rotation * (Quaternion.Inverse(childRot) * targetRot);
 
-            transform.rotation = Quaternion.Euler(0, (connectionPoints[connectionIndex].rotation.eulerAngles.y - transform.rotation.eulerAngles.y) + doorConnectionPoint.rotation.eulerAngles.y, 0);
+            if(connectionPoints[connectionIndex].rotation.eulerAngles != doorConnectionPoint.rotation.eulerAngles)
+            {
+                Debug.LogError("WHY THO");
+            }
             transform.position = doorConnectionPoint.position + (transform.position - connectionPoints[connectionIndex].position);
 
             for (int i = 0; i < connectionPoints.Length; i++)

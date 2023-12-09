@@ -1,3 +1,11 @@
 Footsteps:
 loscolt890 - RegularFootstep001.wav
 https://freesound.org/people/loscolt890/sounds/443275/
+
+Door Open:
+tbirch55 - Door Open.mp3
+https://freesound.org/people/tbirch55/sounds/538978/
+
+Door Close:
+tbirch55 - Door Close.mp3
+https://freesound.org/people/tbirch55/sounds/538979/

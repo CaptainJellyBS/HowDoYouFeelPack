@@ -9,8 +9,11 @@ namespace HowDoYouFeel.MuseumGame
     {
         public ObjectPool roomPool;
         public ObjectPool doorPool;
+        public ObjectPool artPool;
 
-        public Room activeRoom;
+        public Room activeRoom, lastCountedRoom;
+        public int roomCounter;
+        public float maxArtXSize = 3.0f, maxArtYSize = 3.5f, minArtXSize = 0.25f, minArtYSize = 0.25f;
 
         public static GameManager Instance { get; private set; }
 
@@ -22,6 +25,7 @@ namespace HowDoYouFeel.MuseumGame
 
         private void Start()
         {
+            roomCounter = 0;
             if (activeRoom != null)
             {
                 activeRoom.InitializeAsStartRoom();
@@ -54,13 +58,25 @@ namespace HowDoYouFeel.MuseumGame
             //If the room is part of the room pool, store it. Otherwise (if it's a special room), just destroy it.
             if (roomPool.objects.Contains(r.gameObject))
             {
+                r.CleanupArt();
                 roomPool.Store(r.gameObject);
             }
             else
             {
+                r.CleanupArt();
                 Destroy(r.gameObject);
             }
             CleanupDoors();
+        }
+
+        public void ExitedDoor()
+        {
+            if(lastCountedRoom != activeRoom) 
+            { 
+                roomCounter++;
+                //UpdatePostProcessing();
+            }
+            lastCountedRoom = activeRoom;
         }
     }
 }

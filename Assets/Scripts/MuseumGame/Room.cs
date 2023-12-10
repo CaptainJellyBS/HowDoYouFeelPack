@@ -6,11 +6,17 @@ namespace HowDoYouFeel.MuseumGame
 {
     public class Room : MonoBehaviour
     {
+        public ArtStyle roomStyle;
+        public Transform[] artPoints;
+        public List<ShiftingArt> artObjects;
         public Transform[] connectionPoints;
         public GameObject models;
 
         public void SpawnRoomAtPoint(Transform doorConnectionPoint)
         {
+
+            //roomStyle = (ArtStyle)Random.Range(0, 5);
+
             models.SetActive(false);
             if(connectionPoints.Length <= 0) { throw new System.Exception("Room has no connection points. Fix your shit."); }
 
@@ -33,6 +39,9 @@ namespace HowDoYouFeel.MuseumGame
                 if(i == connectionIndex) { continue; }
                 SpawnDoor(connectionPoints[i]);
             }
+
+            SpawnArt();
+
             models.SetActive(true);
         }
 
@@ -44,11 +53,41 @@ namespace HowDoYouFeel.MuseumGame
 
         public void InitializeAsStartRoom()
         {
+            Debug.LogWarning("ToDo: Uncomment artstyle variety in Room.cs, in BOTH initialize functions");
+            //roomStyle = (ArtStyle)Random.Range(0, 5);
             for (int i = 0; i < connectionPoints.Length; i++)
             {
                 SpawnDoor(connectionPoints[i]);
             }
+
+            SpawnArt();
+
             models.SetActive(true);
+        }
+
+        void SpawnArt()
+        {
+            CleanupArt();
+            artObjects = new List<ShiftingArt>();
+
+            for (int i = 0; i < artPoints.Length; i++)
+            {
+                if (!artPoints[i].gameObject.activeSelf) { continue; }
+                ShiftingArt art = GameManager.Instance.artPool.Spawn(artPoints[i].position, artPoints[i].rotation).GetComponent<ShiftingArt>();
+                art.Initialize(roomStyle);
+                artObjects.Add(art);
+            }
+        }
+        
+        public void CleanupArt()
+        {
+            if(artObjects == null) { return; }
+            
+            foreach (ShiftingArt art in artObjects)
+            {
+                GameManager.Instance.artPool.Store(art.gameObject);
+            }
+            
         }
     }
 }

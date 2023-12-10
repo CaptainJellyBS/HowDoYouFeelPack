@@ -100,7 +100,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 108999214167789546, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 194634142038321999, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1587010311872061472, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267290233702318728, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -126,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 1843856345}
     - target: {fileID: 7703998913080752332, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
       propertyPath: m_Name
-      value: 3x3SquareRoom3CP
+      value: 3x3SquareRoom3CP Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7703998913080752333, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
       propertyPath: m_RootOrder

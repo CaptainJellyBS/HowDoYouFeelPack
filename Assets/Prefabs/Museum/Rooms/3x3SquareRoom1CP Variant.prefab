@@ -42,6 +42,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1587010311872061472, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7703998913080752330, guid: 91c2469790e7e174286147d90a4f8368, type: 3}
       propertyPath: connectionPoints.Array.size
       value: 1

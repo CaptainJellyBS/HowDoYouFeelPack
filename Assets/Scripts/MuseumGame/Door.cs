@@ -43,6 +43,7 @@ namespace HowDoYouFeel.MuseumGame
 
             if(playerInInsideTrigger && !playerInOutsideTrigger) { GameManager.Instance.activeRoom = insideRoom; }
             if (!playerInInsideTrigger && playerInOutsideTrigger) { GameManager.Instance.activeRoom = outsideRoom; }
+            if(!playerInInsideTrigger && !playerInOutsideTrigger) { GameManager.Instance.ExitedDoor(); }
 
             if(isIn && !playerIsInDoor)
             {

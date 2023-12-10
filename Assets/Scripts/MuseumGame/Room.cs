@@ -11,6 +11,8 @@ namespace HowDoYouFeel.MuseumGame
         public List<ShiftingArt> artObjects;
         public Transform[] connectionPoints;
         public GameObject models;
+        [Range(0.0f, 1.0f)]
+        public float artSpawnChance;
 
         public void SpawnRoomAtPoint(Transform doorConnectionPoint)
         {
@@ -67,12 +69,12 @@ namespace HowDoYouFeel.MuseumGame
 
         void SpawnArt()
         {
-            CleanupArt();
             artObjects = new List<ShiftingArt>();
 
             for (int i = 0; i < artPoints.Length; i++)
             {
                 if (!artPoints[i].gameObject.activeSelf) { continue; }
+                if(Random.Range(0.0f, 1.0f) >= artSpawnChance) { continue; }
                 ShiftingArt art = GameManager.Instance.artPool.Spawn(artPoints[i].position, artPoints[i].rotation).GetComponent<ShiftingArt>();
                 art.Initialize(roomStyle);
                 artObjects.Add(art);

@@ -33,7 +33,7 @@ namespace HowDoYouFeel.MuseumGame
         }
         public string GetDescription()
         {
-            return "<b>" + artName + "</b> (" + creationYear + ")\n"
+            return "<b>" + artName + "</b>, " + creationYear + "\n"
                 + artistName + " (" + artistBirthYear + " - " + artistDeathYear + ")\n" +
                 "<i>" + artMedium + "</i>";
         }

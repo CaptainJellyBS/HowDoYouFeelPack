@@ -11,6 +11,8 @@ namespace HowDoYouFeel.MuseumGame
         public ObjectPool doorPool;
         public ObjectPool artPool;
 
+        public PostProcessingHandler ppHandler;
+
         public Room activeRoom, lastCountedRoom;
         public int roomCounter;
         public float maxArtXSize = 3.0f, maxArtYSize = 3.5f, minArtXSize = 0.25f, minArtYSize = 0.25f;
@@ -55,15 +57,14 @@ namespace HowDoYouFeel.MuseumGame
 
         public void StoreRoom(Room r)
         {
+            r.CleanupArt();
             //If the room is part of the room pool, store it. Otherwise (if it's a special room), just destroy it.
             if (roomPool.objects.Contains(r.gameObject))
             {
-                r.CleanupArt();
                 roomPool.Store(r.gameObject);
             }
             else
             {
-                r.CleanupArt();
                 Destroy(r.gameObject);
             }
             CleanupDoors();
@@ -74,6 +75,7 @@ namespace HowDoYouFeel.MuseumGame
             if(lastCountedRoom != activeRoom) 
             { 
                 roomCounter++;
+                ppHandler.UpdatePostProcessing(roomCounter);
                 //UpdatePostProcessing();
             }
             lastCountedRoom = activeRoom;

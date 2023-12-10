@@ -49,8 +49,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomStyle: 0
   artPoints: []
+  artObjects: []
   connectionPoints: []
   models: {fileID: 1486233530057970279}
+  artSpawnChance: 0
 --- !u!1 &1486233530057970279
 GameObject:
   m_ObjectHideFlags: 0

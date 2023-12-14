@@ -15,10 +15,10 @@ MonoBehaviour:
   active: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 0.85
+    m_Value: 0.75
   intensity:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 6
   scatter:
     m_OverrideState: 1
     m_Value: 0.65
@@ -101,7 +101,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.7
 --- !u!114 &-4349749252161959043
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -149,7 +149,7 @@ MonoBehaviour:
   red:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 4
+      <length>k__BackingField: 3
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -166,28 +166,19 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.3601108
-          value: 0.2882353
-          inSlope: 2.3050845
-          outSlope: 2.3050845
+          time: 0.8393352
+          value: 0.9941176
+          inSlope: -0.050560474
+          outSlope: -0.050560474
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.72853184
-          value: 0.92941177
-          inSlope: 0.39975527
-          outSlope: 0.39975527
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.98930484
+          time: 1
           value: 1
-          inSlope: 0.05153669
-          outSlope: 0.05153669
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -198,7 +189,7 @@ MonoBehaviour:
   green:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 4
+      <length>k__BackingField: 3
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -215,19 +206,10 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.37950137
-          value: 0.24705881
-          inSlope: 1.8336413
-          outSlope: 1.8336413
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.7479224
-          value: 0.9470588
-          inSlope: 0.18940632
-          outSlope: 0.18940632
+          time: 0.84487534
+          value: 1
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -235,7 +217,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 0.35216594
+          inSlope: 0
           outSlope: 0
           tangentMode: 0
           weightedMode: 0
@@ -247,7 +229,7 @@ MonoBehaviour:
   blue:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 4
+      <length>k__BackingField: 3
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -264,19 +246,10 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.35457063
-          value: 0.24117649
-          inSlope: 1.6806045
-          outSlope: 1.6806045
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.8393352
-          value: 0.9588235
-          inSlope: 0.35392106
-          outSlope: 0.35392106
+          time: 0.84210527
+          value: 1
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -284,7 +257,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 0.15847477
+          inSlope: 0
           outSlope: 0
           tangentMode: 0
           weightedMode: 0
@@ -330,7 +303,7 @@ MonoBehaviour:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0
+          time: 0.008310249
           value: 0
           inSlope: 0
           outSlope: 0
@@ -339,19 +312,19 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.7673797
-          value: 0.23728812
-          inSlope: 0.7585115
-          outSlope: 0.7585115
+          time: 0.57894737
+          value: 0.16470587
+          inSlope: 0.6134642
+          outSlope: 0.6134642
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
-          value: 0.86440676
-          inSlope: 6.5150695
-          outSlope: 6.5150695
+          time: 0.81163436
+          value: 1
+          inSlope: -0.08246716
+          outSlope: -0.08246716
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -387,10 +360,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.22583662, g: 0.23084286, b: 0.23584908, a: 1}
+    m_Value: {r: 0.13817193, g: 0.13984068, b: 0.14150941, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
+    m_Value: {r: 0.8207547, g: 0.8168832, b: 0.8168832, a: 1}
   balance:
     m_OverrideState: 1
     m_Value: -10
@@ -412,3 +385,32 @@ MonoBehaviour:
   - {fileID: -5701836634340380939}
   - {fileID: -4349749252161959043}
   - {fileID: -2014713370016317787}
+  - {fileID: 1711750405129058207}
+--- !u!114 &1711750405129058207
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.04236383, g: 0.066012315, b: 0.0754717, a: 1}
+  center:
+    m_OverrideState: 0
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.4
+  smoothness:
+    m_OverrideState: 0
+    m_Value: 0.2
+  rounded:
+    m_OverrideState: 0
+    m_Value: 0

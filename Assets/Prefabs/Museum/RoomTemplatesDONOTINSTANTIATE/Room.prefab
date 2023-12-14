@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8627ad327e485cf40af0f5afa14a01f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomStyle: 0
+  roomStyle: 1
   artPoints: []
   artObjects: []
   connectionPoints: []

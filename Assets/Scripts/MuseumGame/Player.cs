@@ -28,6 +28,7 @@ namespace HowDoYouFeel.MuseumGame
 
         Vector2 lookInput, moveInput;
         int currentFoot = -1; //-1 = left foot, 1 = right foot
+        bool canMove = true, canLook = true, canGiveUp = true;
 
         PlayerInput playerInput;
         Animator animator;
@@ -62,6 +63,7 @@ namespace HowDoYouFeel.MuseumGame
 
         void HandleRotation()
         {
+            if (!canLook) { return; }
             float rotationX = lookInput.x * lookSpeed;
             float rotationY = lookInput.y * lookSpeed;
 
@@ -98,6 +100,8 @@ namespace HowDoYouFeel.MuseumGame
 
         void HandleMovement()
         {
+            if (!canMove) { rb.velocity = Vector3.Scale(rb.velocity, Vector3.up); return; }
+
             if(moveInput == Vector2.zero)
             {
                 animator.SetBool("isWalking", false);
@@ -147,6 +151,29 @@ namespace HowDoYouFeel.MuseumGame
         public void OnMove(InputValue value)
         {
             moveInput = value.Get<Vector2>();
+        }
+
+        #endregion
+
+        public void OnGiveUp(InputValue value)
+        {
+            if (!canGiveUp) { return; }
+            Debug.Log("Player gave up");
+            canMove = false; canLook = false; canGiveUp = false;
+            animator.SetTrigger("giveUpTrigger");
+            GameManager.Instance.giveUpPanel.SetActive(false);
+        }
+
+        #region animation triggered functions
+
+        public void ActivateDeathPostProcessing()
+        {
+            GameManager.Instance.ppHandler.Die();
+        }
+
+        public void ActivateGameManagerFadeOut()
+        {
+            GameManager.Instance.GiveUpFadeOut();
         }
 
         #endregion

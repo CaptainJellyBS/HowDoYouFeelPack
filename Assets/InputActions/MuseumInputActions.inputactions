@@ -1,5 +1,5 @@
 {
-    "name": "ArcadeInputActions",
+    "name": "MuseumInputActions",
     "maps": [
         {
             "name": "Player",
@@ -169,7 +169,7 @@
                 {
                     "name": "",
                     "id": "53dbea4f-7fd8-46b8-bd76-7e1e6e5deeb8",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -180,7 +180,7 @@
                 {
                     "name": "",
                     "id": "d85db879-f0c2-4837-a9b0-5fbc403610b6",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

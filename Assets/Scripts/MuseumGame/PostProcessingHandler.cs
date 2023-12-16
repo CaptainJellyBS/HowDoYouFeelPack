@@ -8,7 +8,7 @@ namespace HowDoYouFeel.MuseumGame
 {
     public class PostProcessingHandler : MonoBehaviour
     {
-        public Volume startVolume, endVolume;
+        public Volume startVolume, endVolume, deadVolume;
         public int endRoom = 50;
         bool isUpdating;
                 
@@ -41,6 +41,13 @@ namespace HowDoYouFeel.MuseumGame
             endVolume.weight = i;
 
             isUpdating = false;
+        }
+
+        public void Die()
+        {
+            startVolume.gameObject.SetActive(false);
+            endVolume.gameObject.SetActive(false);
+            deadVolume.gameObject.SetActive(true);
         }
     }
 }

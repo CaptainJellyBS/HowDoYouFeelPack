@@ -9,7 +9,7 @@ namespace HowDoYouFeel.Global
     {
         public List<string> tags = new List<string> { "Player" };
         public UnityEvent onEnter, onExit;
-        //public UnityEvent onStay; //Uncomment for onStay behavior
+        public UnityEvent onStay; //Uncomment for onStay behavior
 
         private void OnTriggerEnter(Collider other)
         {
@@ -30,9 +30,7 @@ namespace HowDoYouFeel.Global
         {
             if (tags.Contains(collision.tag)) { onExit.Invoke(); }
         }
-
-        //Uncomment for onStay behavior
-        /*
+   
         private void OnTriggerStay(Collider other)
         {
             if (tags.Contains(other.tag)) { onStay.Invoke(); }
@@ -41,7 +39,6 @@ namespace HowDoYouFeel.Global
         private void OnTriggerStay2D(Collider2D collision)
         {
             if (tags.Contains(collision.tag)) { onStay.Invoke(); }
-        }
-        */
+        }        
     }
 }

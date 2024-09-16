@@ -22,7 +22,8 @@ namespace HowDoYouFeel.MuseumGame
         [Header("UI Elements")]
         public GameObject giveUpPanel;
         public Image fadePanel;
-        public TextMeshProUGUI fadeText0, fadeText1;        
+        public TextMeshProUGUI fadeText0, fadeText1;
+        public GameObject buttonMenu, buttonReload;
 
         float giveUpTimer = 0.0f;
 
@@ -97,13 +98,21 @@ namespace HowDoYouFeel.MuseumGame
 
         public void ShowGiveUpPanel()
         {
-            if(giveUpTimer > 0.0f) { giveUpTimer = 1.0f; return; }
-            StartCoroutine(ShowGiveUpPanelC());
+            if(giveUpTimer > 0.0f) { giveUpTimer = Mathf.Max(giveUpTimer, 1.0f); return; }
+            StartCoroutine(ShowGiveUpPanelC(1.0f, 0.0f));;
         }
 
-        IEnumerator ShowGiveUpPanelC()
+        public void ShowGiveUpPanel(float duration, float delay)
         {
-            giveUpTimer = 1.0f;
+            if (giveUpTimer > 0.0f) { giveUpTimer = 1.0f; return; }
+            StartCoroutine(ShowGiveUpPanelC(duration, delay));
+        }
+
+        IEnumerator ShowGiveUpPanelC(float duration, float delay)
+        {
+            giveUpTimer = duration;
+
+            yield return new WaitForSeconds(delay);
 
             giveUpPanel.transform.localScale = new Vector3(1, 0, 1);
             giveUpPanel.SetActive(true);
@@ -140,6 +149,8 @@ namespace HowDoYouFeel.MuseumGame
         {
             float t = 0.0f;
             fadePanel.color = Color.clear;
+            buttonMenu.SetActive(false);
+            buttonReload.SetActive(false);
 
             Color origTextColor = fadeText0.color;
             fadeText0.color = Color.clear;
@@ -166,6 +177,20 @@ namespace HowDoYouFeel.MuseumGame
                 yield return null;
                 t += Time.deltaTime;
             }
+            buttonMenu.GetComponent<Button>().interactable = false;
+            buttonReload.GetComponent<Button>().interactable = false;
+            yield return new WaitForSeconds(2.0f);
+            buttonMenu.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            buttonReload.SetActive(true);
+
+            Cursor.lockState = CursorLockMode.None;
+            GlobalManager.Instance.CursorVisible = true;
+
+            buttonMenu.GetComponent<Button>().interactable = true;
+            buttonReload.GetComponent<Button>().interactable = true;
+
+            buttonReload.GetComponent<Selectable>().Select();
         }
     }
 }

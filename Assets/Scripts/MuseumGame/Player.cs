@@ -42,6 +42,9 @@ namespace HowDoYouFeel.MuseumGame
 
         private void Start()
         {
+            canMove = false;
+            canLook = false;
+            canGiveUp = false;
             playerInput = GetComponent<PlayerInput>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody>();
@@ -50,6 +53,14 @@ namespace HowDoYouFeel.MuseumGame
             GlobalManager.Instance.CursorVisible = false;
 
             currentFoot = -1;
+        }
+
+        public void EnableInteractivity()
+        {
+            canMove = true;
+            canLook = true;
+            canGiveUp = true;
+            GameManager.Instance.ShowGiveUpPanel(3.5f, 1.0f);
         }
 
         private void FixedUpdate()

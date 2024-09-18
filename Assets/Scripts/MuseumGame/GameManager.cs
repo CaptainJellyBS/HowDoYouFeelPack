@@ -18,7 +18,13 @@ namespace HowDoYouFeel.MuseumGame
         public Room activeRoom, lastCountedRoom;
         public int roomCounter;
         public float maxArtXSize = 3.0f, maxArtYSize = 3.5f, minArtXSize = 0.25f, minArtYSize = 0.25f;
-        
+
+        public int endRoom;
+
+        public List<GameObject> specialRoomsList;
+        public List<int> specialRoomIndices;
+        public Dictionary<int, GameObject> specialRooms;
+
         [Header("UI Elements")]
         public GameObject giveUpPanel;
         public Image fadePanel;
@@ -33,6 +39,14 @@ namespace HowDoYouFeel.MuseumGame
         {
             if (Instance != null) { Destroy(Instance); Debug.LogWarning("Had to destroy a still existing Museum GameManager Instance"); }
             Instance = this;
+
+            if(specialRoomsList.Count != specialRoomIndices.Count) { Debug.LogError("Special Rooms and Special Room Indices are not the same;"); }
+
+            specialRooms = new Dictionary<int, GameObject>();
+            for (int i = 0; i < specialRoomIndices.Count; i++)
+            {
+                specialRooms.Add(specialRoomIndices[i], specialRoomsList[i]);
+            }
         }
 
         private void Start()
@@ -63,7 +77,15 @@ namespace HowDoYouFeel.MuseumGame
 
         public Room SpawnRoom(Transform doorConnectionPoint)
         {
-            Room r = roomPool.SpawnRandom(new Vector3(0, 100, 0), Quaternion.identity).GetComponent<Room>();
+            Room r;
+            if(specialRooms.ContainsKey(roomCounter))
+            {
+                r = Instantiate(specialRooms[roomCounter], new Vector3(0,100,0), Quaternion.identity).GetComponent<Room>();
+            }
+            else
+            {
+                r = roomPool.SpawnRandom(new Vector3(0, 100, 0), Quaternion.identity).GetComponent<Room>();
+            }
             r.SpawnRoomAtPoint(doorConnectionPoint);
 
             return r;
@@ -88,7 +110,7 @@ namespace HowDoYouFeel.MuseumGame
         {
             if(lastCountedRoom != activeRoom) 
             { 
-                roomCounter++;
+                roomCounter++; roomCounter = Mathf.Min(roomCounter, endRoom);
                 ppHandler.UpdatePostProcessing(roomCounter);
                 //UpdatePostProcessing();
             }

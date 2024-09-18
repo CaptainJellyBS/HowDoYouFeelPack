@@ -16,8 +16,7 @@ namespace HowDoYouFeel.MuseumGame
 
         public void SpawnRoomAtPoint(Transform doorConnectionPoint)
         {
-
-            //roomStyle = (ArtStyle)Random.Range(0, 5);
+            roomStyle = (ArtStyle)Random.Range(0, 5);
 
             models.SetActive(false);
             if(connectionPoints.Length <= 0) { throw new System.Exception("Room has no connection points. Fix your shit."); }
@@ -55,8 +54,8 @@ namespace HowDoYouFeel.MuseumGame
 
         public void InitializeAsStartRoom()
         {
-            Debug.LogWarning("ToDo: Uncomment artstyle variety in Room.cs, in BOTH initialize functions");
-            //roomStyle = (ArtStyle)Random.Range(0, 5);
+            //Debug.LogWarning("ToDo: Uncomment artstyle variety in Room.cs, in BOTH initialize functions");
+            roomStyle = (ArtStyle)Random.Range(0, 5);
             for (int i = 0; i < connectionPoints.Length; i++)
             {
                 SpawnDoor(connectionPoints[i]);

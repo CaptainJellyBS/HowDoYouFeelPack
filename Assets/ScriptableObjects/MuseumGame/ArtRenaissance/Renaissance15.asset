@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a43a8c0d0f050c44ac3583f188a80ca, type: 3}
+  m_Name: Renaissance15
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 2e181e116b85a594794b12aefc92b4b3, type: 3}
+  artName: Saint George and the Dragon
+  creationYear: c. 1432/1435
+  artistName: Rogier van der Weyden
+  artMedium: oil on panel
+  artistBirthYear: 1399/1400
+  artistDeathYear: 1464
+  style: 2

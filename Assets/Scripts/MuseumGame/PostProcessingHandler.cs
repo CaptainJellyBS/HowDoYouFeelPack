@@ -9,11 +9,18 @@ namespace HowDoYouFeel.MuseumGame
     public class PostProcessingHandler : MonoBehaviour
     {
         public Volume startVolume, endVolume, deadVolume;
-        public int endRoom = 50;
+        //public int endRoom = 50;
+        int endRoom;
         bool isUpdating;
-                
+
+        private void OnEnable()
+        {
+            endRoom = GameManager.Instance.endRoom;
+        }
+
         public void UpdatePostProcessing(int roomCounter)
         {
+            endRoom = GameManager.Instance.endRoom;
             StartCoroutine(UpdatePostProcessingC(roomCounter));
         }
 

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a43a8c0d0f050c44ac3583f188a80ca, type: 3}
+  m_Name: Renaissance21
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: d60c3636f166077438d050e4361d1a00, type: 3}
+  artName: Chalice of Saint John the Evangelist
+  creationYear: c. 1470/1475
+  artistName: Hans Memling
+  artMedium: oil on panel
+  artistBirthYear: 
+  artistDeathYear: 
+  style: 2

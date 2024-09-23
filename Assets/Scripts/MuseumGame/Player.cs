@@ -168,6 +168,11 @@ namespace HowDoYouFeel.MuseumGame
 
         public void OnGiveUp(InputValue value)
         {
+            OnGiveUp();
+        }
+
+        public void OnGiveUp()
+        {
             if (!canGiveUp) { return; }
             Debug.Log("Player gave up");
             canMove = false; canLook = false; canGiveUp = false;

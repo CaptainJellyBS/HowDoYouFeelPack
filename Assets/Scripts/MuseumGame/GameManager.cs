@@ -4,6 +4,7 @@ using UnityEngine;
 using HowDoYouFeel.Global;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 namespace HowDoYouFeel.MuseumGame
 {
@@ -31,7 +32,13 @@ namespace HowDoYouFeel.MuseumGame
         public TextMeshProUGUI fadeText0, fadeText1;
         public GameObject buttonMenu, buttonReload;
 
+        public GameObject endingPanel;
+        public Image endingFadePanel;
+        public TextMeshProUGUI endingText;
+
         float giveUpTimer = 0.0f;
+
+        bool endingReached = false;
 
         public static GameManager Instance { get; private set; }
 
@@ -169,6 +176,7 @@ namespace HowDoYouFeel.MuseumGame
 
         IEnumerator GiveUpFadeOutC()
         {
+            if (endingReached) { yield break; } //Should not play this animation if the ending has been reached.
             float t = 0.0f;
             fadePanel.color = Color.clear;
             buttonMenu.SetActive(false);
@@ -213,6 +221,55 @@ namespace HowDoYouFeel.MuseumGame
             buttonReload.GetComponent<Button>().interactable = true;
 
             buttonReload.GetComponent<Selectable>().Select();
+        }
+
+        public void Ending()
+        {
+            if (endingReached) { return; }
+            StartCoroutine(EndingC());
+        }
+
+        IEnumerator EndingC()
+        {
+            if (endingReached) { yield break; }
+            endingReached = true;
+            yield return new WaitForSeconds(8.0f);
+
+            Player.Instance.OnGiveUp();
+            yield return new WaitForSeconds(5.5f);
+
+
+            endingFadePanel.color = Color.clear;
+            endingText.color = Color.clear;
+            endingPanel.gameObject.SetActive(true);
+            
+            float t = 0.0f;
+            while (t <= 2.0f)
+            {
+                endingFadePanel.color = Color.Lerp(Color.clear, Color.black, Mathf.Min(1.0f, t));
+                endingText.color = Color.Lerp(Color.clear, Color.white, Mathf.Clamp(t - 0.75f, 0.0f, 1.0f));
+                yield return null;
+                t += Time.deltaTime / 3.0f;
+            }
+            endingFadePanel.color = Color.black;
+            endingText.color = Color.white;
+            yield return new WaitForSeconds(3.0f);
+
+            t = 0.0f;
+            while(t<=1.0f)
+            {
+                endingText.color = Color.Lerp(Color.white, Color.clear, t);
+                yield return null;
+                t += Time.deltaTime / 3.0f;
+            }
+
+            yield return new WaitForSeconds(1.0f);
+
+            Debug.LogWarning("ToDo: Make game unplayable");
+            GlobalManager.Instance.CursorVisible = true;
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene(0);
+
         }
     }
 }

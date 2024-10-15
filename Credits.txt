@@ -1,19 +1,31 @@
-Footsteps:
-loscolt890 - RegularFootstep001.wav
-https://freesound.org/people/loscolt890/sounds/443275/
+MUSEUM GAME
 
-Door Open:
-tbirch55 - Door Open.mp3
-https://freesound.org/people/tbirch55/sounds/538978/
+	Footsteps:
+	loscolt890 - RegularFootstep001.wav
+	https://freesound.org/people/loscolt890/sounds/443275/
 
-Door Close:
-tbirch55 - Door Close.mp3
-https://freesound.org/people/tbirch55/sounds/538979/
+	Door Open:
+	tbirch55 - Door Open.mp3
+	https://freesound.org/people/tbirch55/sounds/538978/
 
-Lamp Buzz:
-mdsn - lamp electricity buzzing.wav
-https://freesound.org/people/mdsn/sounds/175278
+	Door Close:
+	tbirch55 - Door Close.mp3
+	https://freesound.org/people/tbirch55/sounds/538979/
+
+	Lamp Buzz:
+	mdsn - lamp electricity buzzing.wav
+	https://freesound.org/people/mdsn/sounds/175278
 
 
-Museum Art:
-Courtesy National Gallery of Art, Washington.
+	Museum Art:
+	Courtesy National Gallery of Art, Washington.
+	
+FOCUS GAME
+
+	<a href="https://www.flaticon.com/free-icons/brain" title="brain icons">Brain icons created by Vitaly Gorbachev - Flaticon</a>
+	
+	<a href="https://www.flaticon.com/free-icons/energy" title="energy icons">Energy icons created by nawicon - Flaticon</a>
+	
+	<a href="https://www.flaticon.com/free-icons/heart" title="heart icons">Heart icons created by Pixel perfect - Flaticon</a>
+	
+	<a href="https://www.flaticon.com/free-icons/dopamine" title="dopamine icons">Dopamine icons created by Freepik - Flaticon</a>

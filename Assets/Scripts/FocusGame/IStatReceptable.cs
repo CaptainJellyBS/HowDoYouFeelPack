@@ -7,5 +7,6 @@ namespace HowDoYouFeel.FocusGame
     public interface IStatReceptable
     {
         public void ReceiveParticle(StatParticle particle);
+        public Vector3 GetTargetPosition();
     }
 }

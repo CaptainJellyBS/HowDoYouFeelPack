@@ -1,37 +1,76 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HowDoYouFeel.Global;
+using TMPro;
 
 namespace HowDoYouFeel.FocusGame
 {
     public class GameManager : MonoBehaviour
     {
-        public float maxEnergy, maxDopamine, maxHealth;
-        float energy, dopamine, health;
+        [Header("GameObject References")]
+        public List<ObjectPool> particlePools;
+        public Statbar energyBar, dopamineBar, healthBar;
+        public TextMeshProUGUI scoreText;
+        public static GameManager Instance { get; private set; }
+
+        [Header("Stats")]
+        public int maxEnergy;
+        public int maxDopamine, maxHealth;
+        int energy, dopamine, health;
         int score;
 
-        public float Energy
+        public int Energy
         {
             get { return energy; }
-            set { energy = Mathf.Clamp(value,0.0f,maxEnergy); }
+            set { energy = Mathf.Clamp(value,0,maxEnergy); energyBar.Value = energy; }
         }
 
-        public float Dopamine
+        public int Dopamine
         {
             get { return dopamine; }
-            set { dopamine = Mathf.Clamp(value, 0.0f, maxDopamine); }
+            set { dopamine = Mathf.Clamp(value, 0, maxDopamine); dopamineBar.Value = dopamine; }
         }
 
-        public float Health
+        public int Health
         {
             get { return health; }
-            set { health = Mathf.Clamp(value, 0.0f, maxHealth); }
+            set { health = Mathf.Clamp(value, 0, maxHealth); healthBar.Value = health; }
         }
 
         public int Score
         {
             get { return score; }
-            set { score = value; }
+            set { score = value; scoreText.text = score.ToString(); }
         }
+
+        public float particleSpeed = 1.0f;
+
+        private void Awake()
+        {
+            if(Instance != null) { Destroy(Instance); Debug.LogWarning("Had to destroy an old GameManager reference"); }
+
+            Instance = this;
+        }
+
+        private void Start()
+        {
+            healthBar.MaxValue = maxHealth;
+            Health = maxHealth;
+
+            energyBar.MaxValue = maxEnergy;
+            Energy = maxEnergy;
+
+            dopamineBar.MaxValue = maxDopamine;
+            Dopamine = maxDopamine;
+
+            Score = 0;
+        }
+
+        public ObjectPool GetParticlePool(StatParticleType _type)
+        {
+            return particlePools[(int)_type];
+        }
+
     }
 }

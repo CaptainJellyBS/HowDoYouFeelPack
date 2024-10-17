@@ -6,14 +6,21 @@ namespace HowDoYouFeel.FocusGame
 {
     public class Statbar : MonoBehaviour
     {
-        public RectTransform bar;
+        public RectTransform valueBar;
+        public RectTransform capBar;
 
-        float maxValue, currentValue;
+        float maxValue, currentValue, cap;
 
         public float MaxValue
         {
             get { return maxValue; }
             set { maxValue = value; UpdateBar(); }
+        }
+
+        public float Cap
+        {
+            get { return cap; }
+            set { cap = value; UpdateBar(); }
         }
 
         public float Value
@@ -24,7 +31,9 @@ namespace HowDoYouFeel.FocusGame
 
         void UpdateBar()
         {
-            bar.localScale = new Vector3(Mathf.InverseLerp(0.0f, MaxValue, Value), 1.0f, 1.0f);
+            valueBar.localScale = new Vector3(Mathf.InverseLerp(0.0f, MaxValue, Value), 1.0f, 1.0f);
+            if (capBar == null) { return; }
+            capBar.localScale = new Vector3(Mathf.InverseLerp(MaxValue, 0.0f, Cap), 1.0f, 1.0f);
         }
     }
 }

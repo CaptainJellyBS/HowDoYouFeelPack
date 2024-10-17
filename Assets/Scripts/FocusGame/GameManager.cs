@@ -35,7 +35,12 @@ namespace HowDoYouFeel.FocusGame
         public int Health
         {
             get { return health; }
-            set { health = Mathf.Clamp(value, 0, maxHealth); healthBar.Value = health; }
+            set 
+            { 
+                health = Mathf.Clamp(value, 0, maxHealth); 
+                healthBar.Value = health; 
+                energyBar.Cap = health;
+            }
         }
 
         public int Score

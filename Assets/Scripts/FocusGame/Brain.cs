@@ -32,16 +32,27 @@ namespace HowDoYouFeel.FocusGame
                 case StatParticleType.EnergyUp:                    
                 case StatParticleType.EnergyDown:
                     int re = (GameManager.Instance.Energy + particle.statValue) * -1;
-                    GameManager.Instance.Energy += particle.statValue;
+                    int rc = (GameManager.Instance.Energy + particle.statValue) - GameManager.Instance.Health;
+                    GameManager.Instance.Energy = Mathf.Min(GameManager.Instance.Energy + particle.statValue, GameManager.Instance.Health);
                     while (re > 0)
                     {
                         re--;
                         particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.EnergyDown));
                     }
+                    while (rc > 0)
+                    {
+                        rc--;
+                        particleQueue.Enqueue(new StatParticleQueueElement(statConverter, 1, StatParticleType.EnergyUp));
+                    }
                     break;
                 case StatParticleType.HealthUp: 
                 case StatParticleType.HealthDown:
                     GameManager.Instance.Health += particle.statValue;
+                    while(GameManager.Instance.Energy > GameManager.Instance.Health)
+                    {
+                        GameManager.Instance.Energy--;
+                        particleQueue.Enqueue(new StatParticleQueueElement(statConverter, 1, StatParticleType.EnergyUp));
+                    }
                     break;
                 case StatParticleType.ScoreUp:
                     GameManager.Instance.Score += particle.statValue;

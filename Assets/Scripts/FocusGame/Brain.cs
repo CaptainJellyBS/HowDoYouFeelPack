@@ -10,6 +10,22 @@ namespace HowDoYouFeel.FocusGame
         Coroutine particleQueueRoutine;
         Queue<StatParticleQueueElement> particleQueue;
 
+        public void ProgressTask(Task task)
+        {
+            (this as IStatParticleSpawner).SpawnParticle(transform.position, 0, task, StatParticleType.EnergyUp, 1, 0);
+            (this as IStatParticleSpawner).SpawnParticle(transform.position, 0, task, StatParticleType.DopamineUp, 1, 0);
+            if(GameManager.Instance.Dopamine <= 0)
+            {
+                particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.DopamineDown));
+            } 
+            if(GameManager.Instance.Energy <= 0)
+            {
+                particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.EnergyDown));
+            }
+            GameManager.Instance.Dopamine--;
+            GameManager.Instance.Energy--;
+        }
+
         public Vector3 GetTargetPosition()
         {
             return transform.position;

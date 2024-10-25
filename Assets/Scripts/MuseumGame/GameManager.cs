@@ -5,6 +5,7 @@ using HowDoYouFeel.Global;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 namespace HowDoYouFeel.MuseumGame
 {
@@ -38,7 +39,7 @@ namespace HowDoYouFeel.MuseumGame
 
         float giveUpTimer = 0.0f;
 
-        bool endingReached = false;
+        bool endingReached = false, playerGaveUp = false;
 
         public static GameManager Instance { get; private set; }
 
@@ -176,7 +177,8 @@ namespace HowDoYouFeel.MuseumGame
 
         IEnumerator GiveUpFadeOutC()
         {
-            if (endingReached) { yield break; } //Should not play this animation if the ending has been reached.
+            playerGaveUp = true;
+            if (endingReached) {  yield break; } //Should not play this animation if the ending has been reached.
             float t = 0.0f;
             fadePanel.color = Color.clear;
             buttonMenu.SetActive(false);
@@ -233,11 +235,21 @@ namespace HowDoYouFeel.MuseumGame
         {
             if (endingReached) { yield break; }
             endingReached = true;
-            yield return new WaitForSeconds(8.0f);
 
-            Player.Instance.OnGiveUp();
-            yield return new WaitForSeconds(5.5f);
+            MakeGameUnplayable();
 
+            float gt = 28.0f;
+            while (gt >= 0.0f && !playerGaveUp)
+            {
+                yield return null;
+                gt -= Time.deltaTime;
+            }
+
+            if (!playerGaveUp)
+            {
+                Player.Instance.OnGiveUp();
+                yield return new WaitForSeconds(5.5f);
+            }
 
             endingFadePanel.color = Color.clear;
             endingText.color = Color.clear;
@@ -265,11 +277,39 @@ namespace HowDoYouFeel.MuseumGame
 
             yield return new WaitForSeconds(1.0f);
 
-            Debug.LogWarning("ToDo: Make game unplayable");
             GlobalManager.Instance.CursorVisible = true;
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene(0);
 
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (endingReached)
+            {
+                MakeGameUnplayable();
+            }
+        }
+
+        void MakeGameUnplayable()
+        {
+            string path = Application.persistentDataPath + "/MG_ReadBeforeDeleting.txt";
+            if (File.Exists(path)) { return; }
+
+            StreamWriter stream = new StreamWriter(path);
+            stream.WriteLine("Will deleting this file make the Museum game playable again?");
+            stream.WriteLine("Yes. Deleting this file will make the Museum game playable again.");
+            stream.WriteLine("No, you probably should not do it.");
+            stream.WriteLine("The game is not meant to be replayed. If you want to revisit the experience, use your memory.");
+            stream.WriteLine("The effect of your personal opinions and biases on that memory are far more beautiful than experiencing this game again.");
+            stream.WriteLine("There is nothing to be gained by playing it again.");
+            stream.WriteLine("");
+            stream.WriteLine("But I want to make someone else play/record footage/have amnesia/have a seriously valid reason to need to replay this beyond wanting to experience it again!");
+            stream.WriteLine("If that is genuinely true, go ahead!");
+            stream.WriteLine("");
+            stream.WriteLine("I'm a rebel, your opinion does not matter to me, I am sure I want to replay this game!");
+            stream.WriteLine("I cannot tell you what to do. I can only inform you about your choices.");
+            stream.Close();
         }
     }
 }

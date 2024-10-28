@@ -3233,6 +3233,7 @@ MonoBehaviour:
   playerControls: {fileID: 1732258316}
   activeTasks: []
   currentTask: {fileID: 0}
+  taskParent: {fileID: 1418591019}
   taskPrefab: {fileID: 8590322920954795965, guid: bad2dd17614c98a4f9f2c01cb4be4d45, type: 3}
   taskSegmentPrefab: {fileID: 7799835894620293203, guid: edcccf56d82316a47819d7e7333a29f7, type: 3}
   taskSegmentRewardPrefab: {fileID: 2089078445340538914, guid: 9a28378c3ce0bf14fb75716f2a87d14c, type: 3}

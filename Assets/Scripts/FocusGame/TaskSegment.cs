@@ -138,10 +138,9 @@ namespace HowDoYouFeel.FocusGame
                 yield return new WaitForSeconds(0.2f);
                 (this as IStatParticleSpawner).SpawnParticle(particleSpawnpoint.position, 0.0f, TaskManager.Instance.brain, StatParticleType.ScoreUp, scoreReward, 1.0f);
             }
+
+            if (scoreRewardText != null) { scoreRewardText.gameObject.SetActive(false); }
             #endregion
-
-
-            //Sprite update here!
         }
 
         Vector3 PopBubble(StatParticleType _type)

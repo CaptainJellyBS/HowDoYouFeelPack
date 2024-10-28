@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6321b6c650d62648b9d3651f11281e3, type: 3}
+  m_Name: Task
+  m_EditorClassIdentifier: 
+  isPriority: 0
+  isChore: 0
+  repeatsImmediately: 0
+  repeatsDaily: 0
+  dopamineReward: 4
+  energyReward: 0
+  healthReward: 0
+  scoreReward: 1000
+  subRewards:
+  - {fileID: 11400000, guid: 585a756d535bc9544b609e7fe020dc5a, type: 2}
+  - {fileID: 11400000, guid: 77b866524ca8c954e8239b0f99e842c0, type: 2}
+  - {fileID: 11400000, guid: 919f666977e6e5749b4003469281a76f, type: 2}
+  progressNeeded: 18

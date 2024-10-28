@@ -1,18 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TaskSegmentTemplateSO : MonoBehaviour
+namespace HowDoYouFeel.FocusGame
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(fileName = "TaskSegment", menuName = "ScriptableObjects/FocusGame/TaskSegment")]
+    public class TaskSegmentTemplateSO : ScriptableObject, IComparable
     {
-        
-    }
+        public int dopamineReward, energyReward, healthReward, scoreReward;
+        public int index;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public int CompareTo(object obj)
+        {
+            return index.CompareTo(((TaskSegmentTemplateSO)obj).index);
+        }
     }
 }

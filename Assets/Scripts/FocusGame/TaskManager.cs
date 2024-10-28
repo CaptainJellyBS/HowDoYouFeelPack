@@ -13,6 +13,12 @@ namespace HowDoYouFeel.FocusGame
         public List<Task> activeTasks;
         bool playerIsPerformingTask = false;
         public Task currentTask = null;
+        public Transform taskParent;
+
+        public GameObject taskPrefab;
+        public GameObject taskSegmentPrefab, taskSegmentRewardPrefab;
+
+        public TaskTemplateSO[] testTasks;
 
         private void Awake()
         {
@@ -20,6 +26,28 @@ namespace HowDoYouFeel.FocusGame
             Instance = this;
 
             InstantiateTaskList();
+        }
+
+        private void Start()
+        {
+            TestTaskInit();
+        }
+
+        void TestTaskInit()
+        {
+            Debug.LogWarning("Test task init active");
+            float f = 80.0f;
+
+            foreach(TaskTemplateSO tts in testTasks)
+            {
+                Task t = Instantiate(taskPrefab, taskParent).GetComponent<Task>();
+                t.transform.localPosition = Vector3.zero;
+                t.transform.localRotation = Quaternion.AngleAxis(f, Vector3.forward);
+
+                t.Initialize(tts);
+
+                f -= 20.0f;
+            }
         }
 
         public void InstantiateTaskList()
@@ -145,6 +173,7 @@ namespace HowDoYouFeel.FocusGame
 
         void ProgressTask(Task t)
         {
+            if(Mathf.Max(t.CurrentEnergy, t.CurrentDopamine) >= t.MaxProgress) { return; }
             t.FlashOutline();
             brain.ProgressTask(t);
         }

@@ -15,14 +15,23 @@ namespace HowDoYouFeel.FocusGame
         public Task currentTask = null;
         public Transform taskParent;
 
-        public GameObject taskPrefab;
+        public TaskTemplateSO selfCareTaskTemplate;
+
+
+        public GameObject taskPrefab, chorePrefab;
         public GameObject taskSegmentPrefab, taskSegmentRewardPrefab;
 
         public TaskTemplateSO[] testTasks;
 
+        public bool canInteract = true;
+        bool selfcareActive = false;
+
+        Queue<float> taskAngles;
+        Queue<TaskTemplateSO> repeatNextDay;
+
         private void Awake()
         {
-            if(Instance != null) { Destroy(Instance); Debug.LogWarning("Had to destroy an old TaskManager"); }
+            if (Instance != null) { Destroy(Instance); Debug.LogWarning("Had to destroy an old TaskManager"); }
             Instance = this;
 
             InstantiateTaskList();
@@ -36,24 +45,48 @@ namespace HowDoYouFeel.FocusGame
         void TestTaskInit()
         {
             Debug.LogWarning("Test task init active");
-            float f = 80.0f;
 
-            foreach(TaskTemplateSO tts in testTasks)
+            foreach (TaskTemplateSO tts in testTasks)
             {
-                Task t = Instantiate(taskPrefab, taskParent).GetComponent<Task>();
-                t.transform.localPosition = Vector3.zero;
-                t.transform.localRotation = Quaternion.AngleAxis(f, Vector3.forward);
-
-                t.Initialize(tts);
-
-                f -= 20.0f;
+                InstantiateTask(tts);
             }
+        }
+
+        void InstantiateTask(TaskTemplateSO tts)
+        {
+            Task t = Instantiate(tts.isChore? chorePrefab : taskPrefab, taskParent).GetComponent<Task>();
+            t.transform.localPosition = Vector3.zero;
+            t.transform.localRotation = Quaternion.AngleAxis(taskAngles.Dequeue(), Vector3.forward);
+
+            t.Initialize(tts);
         }
 
         public void InstantiateTaskList()
         {
             if (activeTasks == null)
             { activeTasks = new List<Task>(); }
+
+            if (repeatNextDay == null)
+            { repeatNextDay = new Queue<TaskTemplateSO>(); }
+
+            if (taskAngles == null)
+            {
+                taskAngles = new Queue<float>();
+                #region angles hardcode ugliness
+                taskAngles.Enqueue(-75.0f);
+                taskAngles.Enqueue(-45.0f);
+                taskAngles.Enqueue(-15.0f);
+                taskAngles.Enqueue(15.0f);
+                taskAngles.Enqueue(45.0f);
+                taskAngles.Enqueue(75.0f);
+
+                taskAngles.Enqueue(-60.0f);
+                taskAngles.Enqueue(-30.0f);
+                taskAngles.Enqueue(0.0f);
+                taskAngles.Enqueue(30.0f);
+                taskAngles.Enqueue(60.0f);
+                #endregion
+            }
         }
 
         public void HandleInput(Vector3 input, bool pressing)
@@ -69,9 +102,14 @@ namespace HowDoYouFeel.FocusGame
             //Select a task by keeping a CurrentTask internally (to send press events to), but also by updating the Eventsystem
             //(to send OnSelect and OnDeselect to all selectables (including tasks)
 
+            if (!GameManager.Instance.IsDaytime)
+            {
+                currentTask = null;
+                EventSystem.current.SetSelectedGameObject(null);
+                return;
+            }
 
-
-            if(pressing)
+            if (pressing)
             {
                 if (!playerIsPerformingTask)
                 {
@@ -94,7 +132,7 @@ namespace HowDoYouFeel.FocusGame
             Task curTask = null;
             float curAngle = 15.0f; //Determines the maximum angle
 
-            foreach(Task t in activeTasks)
+            foreach (Task t in activeTasks)
             {
                 //float a = Mathf.Abs(t.transform.localRotation.eulerAngles.z - Vector3.SignedAngle(input, Vector3.up, Vector3.forward));
                 float a = Mathf.Abs(Vector3.SignedAngle(input, t.transform.up, Vector3.forward));
@@ -111,7 +149,7 @@ namespace HowDoYouFeel.FocusGame
 
         IEnumerator PerformTaskC()
         {
-            if(currentTask == null)
+            if (currentTask == null)
             {
                 playerIsPerformingTask = false;
                 yield break;
@@ -120,7 +158,7 @@ namespace HowDoYouFeel.FocusGame
             ProgressTask(currentTask);
 
             float t = 0.0f;
-            while(t <= 1.0f && playerIsPerformingTask)
+            while (t <= 1.0f && playerIsPerformingTask)
             {
                 yield return null;
                 t += Time.deltaTime;
@@ -152,7 +190,7 @@ namespace HowDoYouFeel.FocusGame
                 ProgressTask(currentTask);
             }
 
-            while(currentTask != null && playerIsPerformingTask)
+            while (currentTask != null && playerIsPerformingTask)
             {
                 t = 0.0f;
                 while (t <= 0.25f && playerIsPerformingTask)
@@ -173,9 +211,56 @@ namespace HowDoYouFeel.FocusGame
 
         void ProgressTask(Task t)
         {
-            if(Mathf.Max(t.CurrentEnergy, t.CurrentDopamine) >= t.MaxProgress) { return; }
+            if (t.expectedProgress >= t.MaxProgress) { return; }
+            if (Mathf.Max(t.CurrentEnergy, t.CurrentDopamine) >= t.MaxProgress) { return; }
             t.FlashOutline();
             brain.ProgressTask(t);
+        }
+
+        public void TaskCompleted(float angle, TaskTemplateSO taskTemplate)
+        {
+            if(taskTemplate == selfCareTaskTemplate) { selfcareActive = false; }
+            taskAngles.Enqueue(angle);
+            if (taskTemplate.repeatsImmediately) { InstantiateTask(taskTemplate); return; }
+
+            if (taskTemplate.repeatsDaily) { repeatNextDay.Enqueue(taskTemplate); }
+        }
+
+        public Coroutine ProgressDay()
+        {
+            return StartCoroutine(ProgressDayC());
+        }
+
+        IEnumerator ProgressDayC()
+        {
+            foreach (Task t in activeTasks)
+            {
+                yield return t.ProgressDay();
+            }
+            yield break;
+        }
+
+        public Coroutine SpawnNewDayTasks(int day)
+        {
+            return StartCoroutine(SpawnNewDayTasksC(day));
+        }
+
+        IEnumerator SpawnNewDayTasksC(int day)
+        {
+            Debug.LogWarning("New Day Task Spawning not implemented yet");
+
+            if(GameManager.Instance.Health < GameManager.Instance.maxHealth/2 && !selfcareActive)
+            {
+                InstantiateTask(selfCareTaskTemplate);
+                selfcareActive = true;
+            }
+
+            while(repeatNextDay.Count > 0)
+            {
+                InstantiateTask(repeatNextDay.Dequeue());
+                yield return new WaitForSeconds(0.5f);
+            }
+            yield break;
         }
     }
 }

@@ -9,22 +9,52 @@ namespace HowDoYouFeel.FocusGame
         public StatConverter statConverter;
         Coroutine particleQueueRoutine;
         Queue<StatParticleQueueElement> particleQueue;
+        int healthDeficiency = 0;
+        public int ParticleQueueCount
+        {
+            get
+            {
+                if(particleQueue == null) { return 0; }
+                return particleQueue.Count;
+            }
+        }
 
         public void ProgressTask(Task task)
-        {            
+        {
+            if((GameManager.Instance.Health + healthDeficiency) <= (GameManager.Instance.maxHealth / 3) && (GameManager.Instance.Energy <= 0))
+            {
+                //Some kind of warning here
+                return;
+            }
+            task.expectedProgress++;
+
             Vector3 spawnpoint = transform.position + (task.transform.up * 125);
             (this as IStatParticleSpawner).SpawnParticle(spawnpoint + task.transform.right * 64, 0, task, StatParticleType.EnergyUp, 1, 0);
             (this as IStatParticleSpawner).SpawnParticle(spawnpoint + task.transform.right * -64, 0, task, StatParticleType.DopamineUp, 1, 0);
             if(GameManager.Instance.Dopamine <= 0)
             {
                 particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.DopamineDown));
+                if(GameManager.Instance.Energy <= 0)
+                {
+                    StartCoroutine(CalculateHealthDeficiencyC());
+                    StartCoroutine(CalculateHealthDeficiencyC());
+                }
             } 
             if(GameManager.Instance.Energy <= 0)
             {
+                StartCoroutine(CalculateHealthDeficiencyC());
                 particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.EnergyDown));
             }
             GameManager.Instance.Dopamine--;
             GameManager.Instance.Energy--;
+        }
+
+        IEnumerator CalculateHealthDeficiencyC()
+        {
+            //I hate this thing
+            healthDeficiency--;
+            yield return new WaitForSeconds(2.0f);
+            healthDeficiency++;
         }
 
         public Vector3 GetTargetPosition()
@@ -44,6 +74,11 @@ namespace HowDoYouFeel.FocusGame
                     {
                         rd--;
                         particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.DopamineDown));
+                        if(GameManager.Instance.Energy <= 0)
+                        {
+                            StartCoroutine(CalculateHealthDeficiencyC());
+                            StartCoroutine(CalculateHealthDeficiencyC());
+                        }
                     }
                     break;
                 case StatParticleType.EnergyUp:                    
@@ -55,6 +90,7 @@ namespace HowDoYouFeel.FocusGame
                     {
                         re--;
                         particleQueue.Enqueue(new StatParticleQueueElement(statConverter, -1, StatParticleType.EnergyDown));
+                        StartCoroutine(CalculateHealthDeficiencyC());
                     }
                     while (rc > 0)
                     {

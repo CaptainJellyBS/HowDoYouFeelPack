@@ -10,10 +10,13 @@ namespace HowDoYouFeel.FocusGame
     {
         public Transform statReceptablePoint;
         public GameObject outline;
+        public GameObject choreOutline;
 
         public bool isPriority = false, isChore = false, repeatsImmediately = false, repeatsDaily = false;
         public int MaxProgress { get; private set; }
         public int Progress { get; private set; }
+
+        public int expectedProgress;
 
         public int DaysNotCompleted { get; private set; }
 
@@ -25,6 +28,8 @@ namespace HowDoYouFeel.FocusGame
         public int CurrentEnergy { get; private set; } = 0;
         public int CurrentDopamine { get; private set; } = 0;
 
+        TaskTemplateSO myTemplate;
+
         private void Start()
         {
             //Initialize(); //DEBUG
@@ -32,6 +37,14 @@ namespace HowDoYouFeel.FocusGame
 
         public void Initialize(TaskTemplateSO taskTemplate)
         {
+            myTemplate = taskTemplate;
+
+            isChore = taskTemplate.isChore;
+            repeatsDaily = taskTemplate.repeatsDaily;
+            repeatsImmediately = taskTemplate.repeatsImmediately;
+            isPriority = taskTemplate.isPriority;
+
+            expectedProgress = 0;
             List<TaskSegmentTemplateSO> segments = taskTemplate.GetSegmentList();
 
             taskSegments.Add(bottomSegment);
@@ -62,6 +75,7 @@ namespace HowDoYouFeel.FocusGame
 
             foreach (TaskSegment segment in taskSegments)
             {
+                if(segment == headSegment) { segment.Initialize(true); continue; }
                 segment.Initialize();
             }
 
@@ -108,6 +122,8 @@ namespace HowDoYouFeel.FocusGame
         IEnumerator CheckCompleteC()
         {
             if(Progress < MaxProgress) { yield break; }
+
+            TaskManager.Instance.TaskCompleted(transform.rotation.eulerAngles.z, myTemplate);
 
             float s = 
                 (Mathf.Abs(headSegment.dopamineReward) * 0.2f) + 
@@ -172,6 +188,28 @@ namespace HowDoYouFeel.FocusGame
             outline.transform.localScale = Vector3.one * 1.2f;
             yield return new WaitForSeconds(0.1f);
             outline.transform.localScale = Vector3.one;
+        }
+
+        public Coroutine ProgressDay()
+        {
+            return StartCoroutine(ProgressDayC());
+        }
+
+        IEnumerator ProgressDayC()
+        {
+            DaysNotCompleted++;
+
+            if (!isChore) { yield break; }
+
+            for (int i = 0; i < DaysNotCompleted && i < 3; i++)
+            {
+                (headSegment as IStatParticleSpawner).SpawnParticle(headSegment.particleSpawnpoint.position, 0.0f, TaskManager.Instance.brain, StatParticleType.HealthDown, -1, 0.0f);
+
+                choreOutline.transform.localScale = Vector3.one * 1.2f;
+                yield return new WaitForSeconds(0.1f);
+                choreOutline.transform.localScale = Vector3.one;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
     }
 }

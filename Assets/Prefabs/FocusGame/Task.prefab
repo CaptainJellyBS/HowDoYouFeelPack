@@ -956,6 +956,42 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 49d23ffefc3a9ce45afa0a5a58d30f4a, type: 3}
   - {fileID: 21300000, guid: b2d898234c6a6534d94f67ea616f31fd, type: 3}
   - {fileID: 21300000, guid: 42ff0fdb6aa2c684890c75623bbaefd8, type: 3}
+--- !u!1 &4486714754744952234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5550641467350790936}
+  m_Layer: 5
+  m_Name: PriorityPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5550641467350790936
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486714754744952234}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8590322920626892972}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 69.1, y: 55.7}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4731966451877646968
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,6 +2189,7 @@ RectTransform:
   - {fileID: 1827258639009357694}
   - {fileID: 719473164304743772}
   - {fileID: 4618230748489313758}
+  - {fileID: 5550641467350790936}
   m_Father: {fileID: 8590322920954795964}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2289,11 +2326,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statReceptablePoint: {fileID: 4618230748489313758}
+  priorityPoint: {fileID: 5550641467350790936}
   outline: {fileID: 8590322919718893969}
+  choreOutline: {fileID: 0}
   isPriority: 0
   isChore: 0
   repeatsImmediately: 0
   repeatsDaily: 0
+  expectedProgress: 0
   taskSegments: []
   bottomSegment: {fileID: 911958047759044006}
   headSegment: {fileID: 8351181462295732982}

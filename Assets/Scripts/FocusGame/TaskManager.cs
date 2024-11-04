@@ -11,14 +11,16 @@ namespace HowDoYouFeel.FocusGame
         public Brain brain;
         public Transform playerControls;
         public List<Task> activeTasks;
+        public List<IFGSelectable> activeFGSelectables;
+        public List<Priority> activePriorities;
         bool playerIsPerformingTask = false;
-        public Task currentTask = null;
+        public IFGSelectable currentlySelected = null;
         public Transform taskParent;
 
         public TaskTemplateSO selfCareTaskTemplate;
 
 
-        public GameObject taskPrefab, chorePrefab;
+        public GameObject taskPrefab, chorePrefab, priorityPrefab;
         public GameObject taskSegmentPrefab, taskSegmentRewardPrefab;
 
         public TaskTemplateSO[] testTasks;
@@ -26,7 +28,7 @@ namespace HowDoYouFeel.FocusGame
         public bool canInteract = true;
         bool selfcareActive = false;
 
-        Queue<float> taskAngles;
+        Queue<float> selectableAngles;
         Queue<TaskTemplateSO> repeatNextDay;
 
         private void Awake()
@@ -56,7 +58,7 @@ namespace HowDoYouFeel.FocusGame
         {
             Task t = Instantiate(tts.isChore? chorePrefab : taskPrefab, taskParent).GetComponent<Task>();
             t.transform.localPosition = Vector3.zero;
-            t.transform.localRotation = Quaternion.AngleAxis(taskAngles.Dequeue(), Vector3.forward);
+            t.transform.localRotation = Quaternion.AngleAxis(selectableAngles.Dequeue(), Vector3.forward);
 
             t.Initialize(tts);
         }
@@ -66,25 +68,31 @@ namespace HowDoYouFeel.FocusGame
             if (activeTasks == null)
             { activeTasks = new List<Task>(); }
 
+            if(activeFGSelectables == null)
+            { activeFGSelectables = new List<IFGSelectable>(); }
+
             if (repeatNextDay == null)
             { repeatNextDay = new Queue<TaskTemplateSO>(); }
+            
+            if(activePriorities == null)
+            { activePriorities = new List<Priority>(); }
 
-            if (taskAngles == null)
+            if (selectableAngles == null)
             {
-                taskAngles = new Queue<float>();
+                selectableAngles = new Queue<float>();
                 #region angles hardcode ugliness
-                taskAngles.Enqueue(-75.0f);
-                taskAngles.Enqueue(-45.0f);
-                taskAngles.Enqueue(-15.0f);
-                taskAngles.Enqueue(15.0f);
-                taskAngles.Enqueue(45.0f);
-                taskAngles.Enqueue(75.0f);
+                selectableAngles.Enqueue(-75.0f);
+                selectableAngles.Enqueue(-45.0f);
+                selectableAngles.Enqueue(-15.0f);
+                selectableAngles.Enqueue(15.0f);
+                selectableAngles.Enqueue(45.0f);
+                selectableAngles.Enqueue(75.0f);
 
-                taskAngles.Enqueue(-60.0f);
-                taskAngles.Enqueue(-30.0f);
-                taskAngles.Enqueue(0.0f);
-                taskAngles.Enqueue(30.0f);
-                taskAngles.Enqueue(60.0f);
+                selectableAngles.Enqueue(-60.0f);
+                selectableAngles.Enqueue(-30.0f);
+                selectableAngles.Enqueue(0.0f);
+                selectableAngles.Enqueue(30.0f);
+                selectableAngles.Enqueue(60.0f);
                 #endregion
             }
         }
@@ -104,7 +112,7 @@ namespace HowDoYouFeel.FocusGame
 
             if (!GameManager.Instance.IsDaytime)
             {
-                currentTask = null;
+                currentlySelected = null;
                 EventSystem.current.SetSelectedGameObject(null);
                 return;
             }
@@ -122,40 +130,40 @@ namespace HowDoYouFeel.FocusGame
 
             if (input == Vector3.zero)
             {
-                currentTask = null;
+                currentlySelected = null;
                 EventSystem.current.SetSelectedGameObject(null);
                 return;
             }
 
             input = input.normalized;
 
-            Task curTask = null;
+            IFGSelectable curSelected = null;
             float curAngle = 15.0f; //Determines the maximum angle
 
-            foreach (Task t in activeTasks)
+            foreach (IFGSelectable t in activeFGSelectables)
             {
                 //float a = Mathf.Abs(t.transform.localRotation.eulerAngles.z - Vector3.SignedAngle(input, Vector3.up, Vector3.forward));
-                float a = Mathf.Abs(Vector3.SignedAngle(input, t.transform.up, Vector3.forward));
+                float a = Mathf.Abs(Vector3.SignedAngle(input, t.GetSelectDirection(), Vector3.forward));
                 if (a < curAngle)
                 {
                     curAngle = a;
-                    curTask = t;
+                    curSelected = t;
                 }
             }
 
-            currentTask = curTask;
-            EventSystem.current.SetSelectedGameObject(curTask ? curTask.gameObject : null);
+            currentlySelected = curSelected;
+            EventSystem.current.SetSelectedGameObject(curSelected != null ? curSelected.GetGameObject() : null);
         }
 
         IEnumerator PerformTaskC()
         {
-            if (currentTask == null)
+            if (currentlySelected == null)
             {
                 playerIsPerformingTask = false;
                 yield break;
             }
 
-            ProgressTask(currentTask);
+            ProgressTask(currentlySelected);
 
             float t = 0.0f;
             while (t <= 1.0f && playerIsPerformingTask)
@@ -164,13 +172,13 @@ namespace HowDoYouFeel.FocusGame
                 t += Time.deltaTime;
             }
 
-            if (currentTask == null)
+            if (currentlySelected == null)
             {
                 playerIsPerformingTask = false;
                 yield break;
             }
             if (!playerIsPerformingTask) { yield break; }
-            ProgressTask(currentTask);
+            ProgressTask(currentlySelected);
 
             for (int i = 0; i < 4 && playerIsPerformingTask; i++)
             {
@@ -181,16 +189,16 @@ namespace HowDoYouFeel.FocusGame
                     t += Time.deltaTime;
                 }
 
-                if (currentTask == null)
+                if (currentlySelected == null)
                 {
                     playerIsPerformingTask = false;
                     yield break;
                 }
                 if (!playerIsPerformingTask) { yield break; }
-                ProgressTask(currentTask);
+                ProgressTask(currentlySelected);
             }
 
-            while (currentTask != null && playerIsPerformingTask)
+            while (currentlySelected != null && playerIsPerformingTask)
             {
                 t = 0.0f;
                 while (t <= 0.25f && playerIsPerformingTask)
@@ -199,28 +207,54 @@ namespace HowDoYouFeel.FocusGame
                     t += Time.deltaTime;
                 }
 
-                if (currentTask == null)
+                if (currentlySelected == null)
                 {
                     playerIsPerformingTask = false;
                     yield break;
                 }
                 if (!playerIsPerformingTask) { yield break; }
-                ProgressTask(currentTask);
+                ProgressTask(currentlySelected);
             }
         }
 
-        void ProgressTask(Task t)
+        void ProgressTask(IFGSelectable s)
         {
+            Task t = s as Task;
+            if(t == null) { return; }
             if (t.expectedProgress >= t.MaxProgress) { return; }
             if (Mathf.Max(t.CurrentEnergy, t.CurrentDopamine) >= t.MaxProgress) { return; }
             t.FlashOutline();
+
+            foreach(Priority p in activePriorities)
+            {
+                p.ProgressTask(t);
+            }
+
             brain.ProgressTask(t);
         }
 
-        public void TaskCompleted(float angle, TaskTemplateSO taskTemplate)
+        public void MakeTaskPriority(Task t)
         {
+            Priority p = Instantiate(priorityPrefab, taskParent).GetComponent<Priority>();
+            p.SetTask(t);
+            activePriorities.Add(p);
+        }
+
+        public void TaskCompleted(float angle, TaskTemplateSO taskTemplate, Task task)
+        {
+            List<Priority> completedPriorities = new List<Priority>();
+            foreach(Priority p in activePriorities)
+            {
+                if(p.attachedTask == task) { completedPriorities.Add(p); }
+            }
+
+            foreach(Priority p in completedPriorities)
+            {
+                activePriorities.Remove(p); Destroy(p.gameObject);
+            }
+
             if(taskTemplate == selfCareTaskTemplate) { selfcareActive = false; }
-            taskAngles.Enqueue(angle);
+            selectableAngles.Enqueue(angle);
             if (taskTemplate.repeatsImmediately) { InstantiateTask(taskTemplate); return; }
 
             if (taskTemplate.repeatsDaily) { repeatNextDay.Enqueue(taskTemplate); }

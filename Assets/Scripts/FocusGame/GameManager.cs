@@ -79,7 +79,7 @@ namespace HowDoYouFeel.FocusGame
             dopamineBar.MaxValue = maxDopamine;
             Dopamine = maxDopamine;
 
-            sleepParticleSpawner.energyParticleAmount = (int)((float)maxEnergy * 0.8f);
+            sleepParticleSpawner.energyParticleAmount = (int)((float)maxEnergy * 0.9f);
             sleepParticleSpawner.dopamineParticleAmount = maxDopamine / 2;
 
             Score = 0;

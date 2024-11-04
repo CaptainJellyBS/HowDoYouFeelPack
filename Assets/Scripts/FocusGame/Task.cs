@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 namespace HowDoYouFeel.FocusGame
 {
-    public class Task : MonoBehaviour, IStatReceptable, IStatParticleSpawner, ISelectHandler, IDeselectHandler
+    public class Task : MonoBehaviour, IStatReceptable, IStatParticleSpawner, ISelectHandler, IDeselectHandler, IFGSelectable
     {
-        public Transform statReceptablePoint;
+        public Transform statReceptablePoint, priorityPoint;
         public GameObject outline;
         public GameObject choreOutline;
 
@@ -72,6 +72,7 @@ namespace HowDoYouFeel.FocusGame
             if (TaskManager.Instance == null) { Debug.LogError("TASK MANAGER DOES NOT EXIST"); return; }
             TaskManager.Instance.InstantiateTaskList(); //Classic Unity race conditions tomfoolery
             TaskManager.Instance.activeTasks.Add(this);
+            TaskManager.Instance.activeFGSelectables.Add(this);
 
             foreach (TaskSegment segment in taskSegments)
             {
@@ -80,6 +81,7 @@ namespace HowDoYouFeel.FocusGame
             }
 
             MaxProgress = taskSegments.Count;
+            if (isPriority) { TaskManager.Instance.MakeTaskPriority(this); }
         }
 
         public TaskSegment GenerateSegment(TaskSegmentTemplateSO segmentTemplate, float segmentSize)
@@ -123,7 +125,6 @@ namespace HowDoYouFeel.FocusGame
         {
             if(Progress < MaxProgress) { yield break; }
 
-            TaskManager.Instance.TaskCompleted(transform.rotation.eulerAngles.z, myTemplate);
 
             float s = 
                 (Mathf.Abs(headSegment.dopamineReward) * 0.2f) + 
@@ -131,6 +132,9 @@ namespace HowDoYouFeel.FocusGame
                 (Mathf.Abs(headSegment.healthReward) * 0.2f) +
                 1.2f;
             yield return new WaitForSeconds(s);
+
+            TaskManager.Instance.TaskCompleted(transform.rotation.eulerAngles.z, myTemplate, this);
+
             Destroy(gameObject);
         }
 
@@ -169,13 +173,15 @@ namespace HowDoYouFeel.FocusGame
         private void OnDisable()
         {
             TaskManager.Instance.activeTasks.Remove(this);
-            if(TaskManager.Instance.currentTask == this) { TaskManager.Instance.currentTask = null; }   
+            TaskManager.Instance.activeFGSelectables.Remove(this);
+            if(TaskManager.Instance.currentlySelected == this) { TaskManager.Instance.currentlySelected = null; }   
         }
 
         private void OnDestroy()
         {
             TaskManager.Instance.activeTasks.Remove(this);
-            if (TaskManager.Instance.currentTask == this) { TaskManager.Instance.currentTask = null; }
+            TaskManager.Instance.activeFGSelectables.Remove(this);
+            if (TaskManager.Instance.currentlySelected == this) { TaskManager.Instance.currentlySelected = null; }
         }
 
         public void FlashOutline()
@@ -210,6 +216,16 @@ namespace HowDoYouFeel.FocusGame
                 choreOutline.transform.localScale = Vector3.one;
                 yield return new WaitForSeconds(0.1f);
             }
+        }
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
+
+        public Vector3 GetSelectDirection()
+        {
+            return transform.up;
         }
     }
 }

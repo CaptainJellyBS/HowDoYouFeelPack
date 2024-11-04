@@ -1762,6 +1762,7 @@ GameObject:
   - component: {fileID: 544058249}
   - component: {fileID: 544058248}
   - component: {fileID: 544058247}
+  - component: {fileID: 544058250}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1802,7 +1803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1883,6 +1884,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544058245}
   m_CullTransparentMesh: 1
+--- !u!114 &544058250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544058245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23029db496cf8c548a67a626d30b2fc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &580657507
 GameObject:
   m_ObjectHideFlags: 0
@@ -3523,11 +3536,12 @@ MonoBehaviour:
   brain: {fileID: 105570942}
   playerControls: {fileID: 1732258316}
   activeTasks: []
-  currentTask: {fileID: 0}
+  activePriorities: []
   taskParent: {fileID: 1418591019}
   selfCareTaskTemplate: {fileID: 11400000, guid: 05f3f62b3bb1e6e41bc7e2e9dbd9f613, type: 2}
   taskPrefab: {fileID: 8590322920954795965, guid: bad2dd17614c98a4f9f2c01cb4be4d45, type: 3}
   chorePrefab: {fileID: 2357125343222450054, guid: 5eaf923a82acbb344876a08b17efbf88, type: 3}
+  priorityPrefab: {fileID: 2156213952689721797, guid: b4d82d57b877d4d48adf5a6066fc2d29, type: 3}
   taskSegmentPrefab: {fileID: 7799835894620293203, guid: edcccf56d82316a47819d7e7333a29f7, type: 3}
   taskSegmentRewardPrefab: {fileID: 2089078445340538914, guid: 9a28378c3ce0bf14fb75716f2a87d14c, type: 3}
   testTasks:
@@ -3539,6 +3553,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1fadc31ab93fae84698513da54c3ff11, type: 2}
   - {fileID: 11400000, guid: c935ae9e99e83f643b6c050be45ff4c5, type: 2}
   - {fileID: 11400000, guid: 713672b50ed97704484ff3f21fb6320a, type: 2}
+  - {fileID: 11400000, guid: 262563295647ba243bd34a7c7176f317, type: 2}
   canInteract: 0
 --- !u!1 &1298999632
 GameObject:

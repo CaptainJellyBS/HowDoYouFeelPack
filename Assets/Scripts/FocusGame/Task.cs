@@ -76,7 +76,7 @@ namespace HowDoYouFeel.FocusGame
 
             foreach (TaskSegment segment in taskSegments)
             {
-                if(segment == headSegment) { segment.Initialize(true); continue; }
+                //if(segment == headSegment) { segment.Initialize(true); continue; }
                 segment.Initialize();
             }
 

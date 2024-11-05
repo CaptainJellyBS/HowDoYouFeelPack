@@ -29,3 +29,5 @@ FOCUS GAME
 	<a href="https://www.flaticon.com/free-icons/heart" title="heart icons">Heart icons created by Pixel perfect - Flaticon</a>
 	
 	<a href="https://www.flaticon.com/free-icons/dopamine" title="dopamine icons">Dopamine icons created by Freepik - Flaticon</a>
+	
+	<a href="https://www.flaticon.com/free-icons/sleep" title="sleep icons">Sleep icons created by Prosymbols Premium - Flaticon</a>

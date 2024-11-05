@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6321b6c650d62648b9d3651f11281e3, type: 3}
+  m_Name: StandardBigPrize
+  m_EditorClassIdentifier: 
+  isPriority: 0
+  isChore: 0
+  repeatsImmediately: 0
+  repeatsDaily: 1
+  dopamineReward: 8
+  energyReward: 0
+  healthReward: 0
+  scoreReward: 5000
+  subRewards:
+  - {fileID: 11400000, guid: 09300f4e8394f3849a2d7ed3833a87b3, type: 2}
+  - {fileID: 11400000, guid: 4c4871eba98b46b4b9873f52f64c0c7b, type: 2}
+  - {fileID: 11400000, guid: d1bbd33aa9fdfe6429d1981e19a9d19a, type: 2}
+  - {fileID: 11400000, guid: 846e6f50c573cd04996d5325b2c3406e, type: 2}
+  progressNeeded: 38

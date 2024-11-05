@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6321b6c650d62648b9d3651f11281e3, type: 3}
-  m_Name: TestFunTask
+  m_Name: StandardMedPrize
   m_EditorClassIdentifier: 
   isPriority: 0
   isChore: 0
-  repeatsImmediately: 1
-  repeatsDaily: 0
-  dopamineReward: 8
+  repeatsImmediately: 0
+  repeatsDaily: 1
+  dopamineReward: 6
   energyReward: 0
   healthReward: 0
-  scoreReward: 0
+  scoreReward: 1000
   subRewards:
-  - {fileID: 11400000, guid: d1766c959a8f60f4c9c6f52b1f841bbf, type: 2}
-  - {fileID: 11400000, guid: 1b0ea65a2a1d70f4791e3076def88ffc, type: 2}
-  - {fileID: 11400000, guid: 9561b3cccc97bf54aaa98e3693287de2, type: 2}
-  progressNeeded: 5
+  - {fileID: 11400000, guid: 8f19995f4482f854da31a1671caaadbb, type: 2}
+  - {fileID: 11400000, guid: 992545e644180e74385daea2ad400e93, type: 2}
+  - {fileID: 11400000, guid: cd10096497d174c4aa6366d9e7134bba, type: 2}
+  progressNeeded: 24

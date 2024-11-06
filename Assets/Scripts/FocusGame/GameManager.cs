@@ -85,6 +85,8 @@ namespace HowDoYouFeel.FocusGame
             Score = 0;
 
             IsDaytime = true;
+            DayNumber = 0;
+            TaskManager.Instance.SpawnNewDayTasks(DayNumber);
         }
 
         public ObjectPool GetParticlePool(StatParticleType _type)

@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6321b6c650d62648b9d3651f11281e3, type: 3}
-  m_Name: StandardSmallPrize
+  m_Name: Day0Task
   m_EditorClassIdentifier: 
   isPriority: 0
   isChore: 0
   repeatsImmediately: 0
-  repeatsDaily: 1
-  dopamineReward: 3
+  repeatsDaily: 0
+  dopamineReward: 1
   energyReward: 0
   healthReward: 0
-  scoreReward: 250
+  scoreReward: 25
   subRewards:
-  - {fileID: 11400000, guid: ccc40eb8ba17d494cae4e15a5f3b14a1, type: 2}
-  - {fileID: 11400000, guid: dc5618972b0650a4b95ba87ff3cd0e21, type: 2}
-  - {fileID: 11400000, guid: 4c9e535e5938dcd4ebe787e9f200a361, type: 2}
-  progressNeeded: 16
+  - {fileID: 11400000, guid: 61d9bbc98b610184891533e8c6b56e79, type: 2}
+  progressNeeded: 7

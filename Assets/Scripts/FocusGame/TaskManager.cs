@@ -17,6 +17,8 @@ namespace HowDoYouFeel.FocusGame
         public IFGSelectable currentlySelected = null;
         public Transform taskParent;
 
+        public List<Task> tasksBeingRemoved;
+
         public TaskTemplateSO selfCareTaskTemplate;
 
 
@@ -24,6 +26,9 @@ namespace HowDoYouFeel.FocusGame
         public GameObject taskSegmentPrefab, taskSegmentRewardPrefab;
 
         public TaskTemplateSO[] testTasks;
+        public DayContainerSO[] normalDays, adhdDays;
+
+        bool inAdhdMode;
 
         public bool canInteract = true;
         bool selfcareActive = false;
@@ -41,7 +46,8 @@ namespace HowDoYouFeel.FocusGame
 
         private void Start()
         {
-            TestTaskInit();
+            //TestTaskInit();
+            inAdhdMode = false;
         }
 
         void TestTaskInit()
@@ -56,6 +62,7 @@ namespace HowDoYouFeel.FocusGame
 
         void InstantiateTask(TaskTemplateSO tts)
         {
+            if(selectableAngles.Count <= 0) { repeatNextDay.Enqueue(tts); return; }
             Task t = Instantiate(tts.isChore? chorePrefab : taskPrefab, taskParent).GetComponent<Task>();
             t.transform.localPosition = Vector3.zero;
             t.transform.localRotation = Quaternion.AngleAxis(selectableAngles.Dequeue(), Vector3.forward);
@@ -76,6 +83,9 @@ namespace HowDoYouFeel.FocusGame
             
             if(activePriorities == null)
             { activePriorities = new List<Priority>(); }
+
+            if(tasksBeingRemoved == null)
+            { tasksBeingRemoved = new List<Task>(); }
 
             if (selectableAngles == null)
             {
@@ -267,6 +277,7 @@ namespace HowDoYouFeel.FocusGame
 
         IEnumerator ProgressDayC()
         {
+            while(tasksBeingRemoved.Count > 0) { yield return new WaitForSeconds(1.0f); }
             foreach (Task t in activeTasks)
             {
                 yield return t.ProgressDay();
@@ -281,7 +292,39 @@ namespace HowDoYouFeel.FocusGame
 
         IEnumerator SpawnNewDayTasksC(int day)
         {
-            Debug.LogWarning("New Day Task Spawning not implemented yet");
+            if (!inAdhdMode)
+            {
+                if (day >= normalDays.Length)
+                {
+                    SwitchToADHDMode();
+                }
+                else
+                {
+
+                    //Debug.LogWarning("New Day Task Spawning not implemented yet");
+                    foreach (TaskTemplateSO tts in normalDays[day].dayTasks)
+                    {
+                        InstantiateTask(tts);
+                    }
+                }
+            }
+            if(inAdhdMode)
+            {
+                if(day - normalDays.Length >= adhdDays.Length)
+                {
+                    Debug.LogWarning("Ending not implemented yet");
+                    //Trigger ending here
+
+                    //Actually, the game probably loops for a bit. I want to make this ending more conditional, methinks. Hmmmmmm.....
+                }
+                else
+                {
+                    foreach (TaskTemplateSO tts in adhdDays[day - normalDays.Length].dayTasks)
+                    {
+                        InstantiateTask(tts);
+                    }
+                }
+            }
 
             if(GameManager.Instance.Health < GameManager.Instance.maxHealth/2 && !selfcareActive)
             {
@@ -289,12 +332,19 @@ namespace HowDoYouFeel.FocusGame
                 selfcareActive = true;
             }
 
-            while(repeatNextDay.Count > 0)
+            while(repeatNextDay.Count > 0 && selectableAngles.Count > 0)
             {
                 InstantiateTask(repeatNextDay.Dequeue());
                 yield return new WaitForSeconds(0.5f);
             }
             yield break;
+        }
+
+        void SwitchToADHDMode()
+        {
+            Debug.LogWarning("Starting ADHD mode not implemented yet");
+            inAdhdMode = true;
+
         }
     }
 }

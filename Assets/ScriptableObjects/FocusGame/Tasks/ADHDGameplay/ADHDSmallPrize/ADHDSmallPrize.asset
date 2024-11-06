@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6321b6c650d62648b9d3651f11281e3, type: 3}
-  m_Name: StandardSmallPrize
+  m_Name: ADHDSmallPrize
   m_EditorClassIdentifier: 
   isPriority: 0
   isChore: 0
@@ -21,7 +21,9 @@ MonoBehaviour:
   healthReward: 0
   scoreReward: 250
   subRewards:
-  - {fileID: 11400000, guid: ccc40eb8ba17d494cae4e15a5f3b14a1, type: 2}
-  - {fileID: 11400000, guid: dc5618972b0650a4b95ba87ff3cd0e21, type: 2}
-  - {fileID: 11400000, guid: 4c9e535e5938dcd4ebe787e9f200a361, type: 2}
+  - {fileID: 11400000, guid: 70101297c193aef4299de40abf82bbf6, type: 2}
+  - {fileID: 11400000, guid: e8523a6706c9fc54b94467ef1472b7f5, type: 2}
+  - {fileID: 11400000, guid: fb1da635b708a794099ffe2c4fdd918d, type: 2}
+  - {fileID: 11400000, guid: 70ebf58c122152a47942395ba17d332a, type: 2}
+  - {fileID: 11400000, guid: d9112393c4c003d45a3e31f5b7a88da2, type: 2}
   progressNeeded: 16

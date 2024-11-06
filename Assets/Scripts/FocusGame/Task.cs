@@ -49,7 +49,7 @@ namespace HowDoYouFeel.FocusGame
 
             taskSegments.Add(bottomSegment);
 
-            float segmentSize = Mathf.Clamp(720.0f / (float)taskTemplate.progressNeeded, 8.0f, 32.0f);
+            float segmentSize = Mathf.Clamp(520.0f / (float)taskTemplate.progressNeeded, 3.0f, 24.0f);
             float segmentYPos = bottomSegment.GetComponent<RectTransform>().rect.height;
 
             for (int i = 1; i < segments.Count-1; i++)
@@ -125,6 +125,7 @@ namespace HowDoYouFeel.FocusGame
         {
             if(Progress < MaxProgress) { yield break; }
 
+            TaskManager.Instance.tasksBeingRemoved.Add(this);
 
             float s = 
                 (Mathf.Abs(headSegment.dopamineReward) * 0.2f) + 
@@ -133,6 +134,7 @@ namespace HowDoYouFeel.FocusGame
                 1.2f;
             yield return new WaitForSeconds(s);
 
+            TaskManager.Instance.tasksBeingRemoved.Remove(this);
             TaskManager.Instance.TaskCompleted(transform.rotation.eulerAngles.z, myTemplate, this);
 
             Destroy(gameObject);

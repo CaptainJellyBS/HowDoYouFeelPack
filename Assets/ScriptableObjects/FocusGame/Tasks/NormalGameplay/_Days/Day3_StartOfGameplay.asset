@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b11cbcf0a4c55641b6389e4e27255c9, type: 3}
+  m_Name: Day3_StartOfGameplay
+  m_EditorClassIdentifier: 
+  dayTasks:
+  - {fileID: 11400000, guid: 820eca40b31b9274097de818933ebc3b, type: 2}
+  - {fileID: 11400000, guid: 820eca40b31b9274097de818933ebc3b, type: 2}
+  - {fileID: 11400000, guid: 9d3e96d538a8fd84790f8f084fcc49fd, type: 2}
+  - {fileID: 11400000, guid: cf6470b5d3fa0b741a1eacd724abade1, type: 2}
+  - {fileID: 11400000, guid: cf6470b5d3fa0b741a1eacd724abade1, type: 2}
+  - {fileID: 11400000, guid: 44555569cdac5f347bb35b18ca8dd171, type: 2}
+  - {fileID: 11400000, guid: 44555569cdac5f347bb35b18ca8dd171, type: 2}

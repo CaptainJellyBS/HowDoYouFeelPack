@@ -28,6 +28,8 @@ namespace HowDoYouFeel.FocusGame
         public GameObject taskPrefab, chorePrefab, priorityPrefab;
         public GameObject taskSegmentPrefab, taskSegmentRewardPrefab;
 
+        public Animator tutorialAnimator;
+
         public TaskTemplateSO[] testTasks;
         public DayContainerSO[] normalDays, adhdDays;
 
@@ -169,6 +171,7 @@ namespace HowDoYouFeel.FocusGame
 
             currentlySelected = curSelected;
             EventSystem.current.SetSelectedGameObject(curSelected != null ? curSelected.GetGameObject() : null);
+            tutorialAnimator.SetBool("ReadyToPress", currentlySelected != null);
         }
 
         IEnumerator PerformTaskC()
@@ -179,6 +182,7 @@ namespace HowDoYouFeel.FocusGame
                 yield break;
             }
 
+            tutorialAnimator.gameObject.SetActive(false); //HAHA UGLY
             ProgressTask(currentlySelected);
 
             float t = 0.0f;

@@ -29,6 +29,7 @@ namespace HowDoYouFeel.FocusGame
             if(timer > 0) { Debug.LogWarning("Should not be able to use speed while timer active"); return; }
             StartCoroutine(SpawnParticlesC());
 
+            Debug.LogWarning("KNOWN BUG: This doesn't always work");
             if (TaskManager.Instance.activePriorities.Count > 0)
             {
                 List<Priority> completedPriorities = new List<Priority>();

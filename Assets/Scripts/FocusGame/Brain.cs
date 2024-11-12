@@ -19,9 +19,14 @@ namespace HowDoYouFeel.FocusGame
             }
         }
 
+        public bool CanProgressTask()
+        {
+            return !((GameManager.Instance.Health + healthDeficiency) <= (GameManager.Instance.maxHealth / 3) && (GameManager.Instance.Energy <= 0));
+        }
+
         public void ProgressTask(Task task)
         {
-            if((GameManager.Instance.Health + healthDeficiency) <= (GameManager.Instance.maxHealth / 3) && (GameManager.Instance.Energy <= 0))
+            if(!CanProgressTask())
             {
                 //Some kind of warning here
                 return;

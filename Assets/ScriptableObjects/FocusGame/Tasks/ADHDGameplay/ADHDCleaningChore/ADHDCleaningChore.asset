@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6321b6c650d62648b9d3651f11281e3, type: 3}
   m_Name: ADHDCleaningChore
   m_EditorClassIdentifier: 
-  isPriority: 1
-  isChore: 0
+  isPriority: 0
+  isChore: 1
   repeatsImmediately: 0
   repeatsDaily: 0
   dopamineReward: 0

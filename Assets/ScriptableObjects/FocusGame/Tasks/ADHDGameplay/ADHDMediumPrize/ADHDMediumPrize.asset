@@ -20,5 +20,10 @@ MonoBehaviour:
   energyReward: 0
   healthReward: 0
   scoreReward: 1000
-  subRewards: []
+  subRewards:
+  - {fileID: 11400000, guid: e24fc60f50ab8ef4090fe99d3913faf3, type: 2}
+  - {fileID: 11400000, guid: f9ec3c597012fa44db762db660d7c847, type: 2}
+  - {fileID: 11400000, guid: 7135851c1a1e69444b155cd94ac7b4cc, type: 2}
+  - {fileID: 11400000, guid: 890c4451e56946d4b84b160a49436890, type: 2}
+  - {fileID: 11400000, guid: 578057a727e5147489ee2d6a9856fcfb, type: 2}
   progressNeeded: 24

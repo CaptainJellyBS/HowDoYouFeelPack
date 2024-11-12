@@ -149,5 +149,10 @@ namespace HowDoYouFeel.FocusGame
             sleepButton.interactable = true;
         }
 
+        public void SetCurrentDay(int d)
+        {
+            DayNumber = d;
+        }
+
     }
 }

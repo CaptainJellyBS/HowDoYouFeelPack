@@ -15,10 +15,19 @@ MonoBehaviour:
   isPriority: 0
   isChore: 0
   repeatsImmediately: 0
-  repeatsDaily: 0
-  dopamineReward: 0
+  repeatsDaily: 1
+  dopamineReward: 8
   energyReward: 0
   healthReward: 0
-  scoreReward: 0
-  subRewards: []
-  progressNeeded: 0
+  scoreReward: 5000
+  subRewards:
+  - {fileID: 11400000, guid: 4ae338722bafa474fbb66af4ed2a7bc0, type: 2}
+  - {fileID: 11400000, guid: b709e1f543fa5f94e8cee7043f840306, type: 2}
+  - {fileID: 11400000, guid: a399ca9f0d8636146a9785465976fa5b, type: 2}
+  - {fileID: 11400000, guid: 81b896cd689eea74ba36f88cd043e7b4, type: 2}
+  - {fileID: 11400000, guid: e0afd4d03119a4a43a1fa05cefc7008a, type: 2}
+  - {fileID: 11400000, guid: 5ae715b1b930a6f47b1f9d8a10f4380e, type: 2}
+  - {fileID: 11400000, guid: ac32b26f40e6671439872fe3b1a99a2a, type: 2}
+  - {fileID: 11400000, guid: d7d7cedb575a6ab4aa094ba91718eedf, type: 2}
+  - {fileID: 11400000, guid: 9ce99ea941070b74f8bf7e43aaddd54a, type: 2}
+  progressNeeded: 38

@@ -1,7 +1,9 @@
+using HowDoYouFeel.Global;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace HowDoYouFeel.FocusGame
 {
@@ -21,6 +23,7 @@ namespace HowDoYouFeel.FocusGame
 
         public TaskTemplateSO selfCareTaskTemplate;
 
+        public Animator fadePanelAnimator;
 
         public GameObject taskPrefab, chorePrefab, priorityPrefab;
         public GameObject taskSegmentPrefab, taskSegmentRewardPrefab;
@@ -31,10 +34,11 @@ namespace HowDoYouFeel.FocusGame
         bool inAdhdMode;
 
         public bool canInteract = true;
-        bool selfcareActive = false;
+        public bool selfcareActive { get; private set; } = false;
 
         Queue<float> selectableAngles;
         Queue<TaskTemplateSO> repeatNextDay;
+        ADHDManager adhdManager;
 
         private void Awake()
         {
@@ -72,6 +76,8 @@ namespace HowDoYouFeel.FocusGame
 
         public void InstantiateTaskList()
         {
+            adhdManager = GetComponent<ADHDManager>();
+
             if (activeTasks == null)
             { activeTasks = new List<Task>(); }
 
@@ -232,7 +238,8 @@ namespace HowDoYouFeel.FocusGame
             Task t = s as Task;
             if(t == null) { return; }
             if (t.expectedProgress >= t.MaxProgress) { return; }
-            if (Mathf.Max(t.CurrentEnergy, t.CurrentDopamine) >= t.MaxProgress) { return; }
+            if(!brain.CanProgressTask()) { return; }
+                if (Mathf.Max(t.CurrentEnergy, t.CurrentDopamine) >= t.MaxProgress) { return; }
             t.FlashOutline();
 
             foreach(Priority p in activePriorities)
@@ -240,6 +247,7 @@ namespace HowDoYouFeel.FocusGame
                 p.ProgressTask(t);
             }
 
+            if (inAdhdMode) { adhdManager.ProgressTasks(); }
             brain.ProgressTask(t);
         }
 
@@ -267,7 +275,27 @@ namespace HowDoYouFeel.FocusGame
             selectableAngles.Enqueue(angle);
             if (taskTemplate.repeatsImmediately) { InstantiateTask(taskTemplate); return; }
 
-            if (taskTemplate.repeatsDaily) { repeatNextDay.Enqueue(taskTemplate); }
+            if (taskTemplate.repeatsDaily) { repeatNextDay.Enqueue(taskTemplate); }        }
+
+        void RemoveTask(Task task)
+        {
+            List<Priority> completedPriorities = new List<Priority>();
+            foreach (Priority p in activePriorities)
+            {
+                if (p.attachedTask == task) { completedPriorities.Add(p); }
+            }
+
+            foreach (Priority p in completedPriorities)
+            {
+                activePriorities.Remove(p); Destroy(p.gameObject);
+            }
+
+            if (task.myTemplate == selfCareTaskTemplate) { selfcareActive = false; }
+
+            selectableAngles.Enqueue(task.transform.rotation.eulerAngles.z);
+
+            activeTasks.Remove(task);
+            Destroy(task.gameObject);
         }
 
         public Coroutine ProgressDay()
@@ -296,7 +324,7 @@ namespace HowDoYouFeel.FocusGame
             {
                 if (day >= normalDays.Length)
                 {
-                    SwitchToADHDMode();
+                    yield return StartCoroutine(SwitchToADHDMode());
                 }
                 else
                 {
@@ -305,6 +333,7 @@ namespace HowDoYouFeel.FocusGame
                     foreach (TaskTemplateSO tts in normalDays[day].dayTasks)
                     {
                         InstantiateTask(tts);
+                        yield return new WaitForSeconds(0.5f);
                     }
                 }
             }
@@ -312,16 +341,42 @@ namespace HowDoYouFeel.FocusGame
             {
                 if(day - normalDays.Length >= adhdDays.Length)
                 {
-                    Debug.LogWarning("Ending not implemented yet");
+                    //Debug.LogWarning("Ending not implemented yet");
+                    if(GameManager.Instance.Score > 1000)
+                    {
+                        //Debug.LogWarning("ENDING TRIGGER");
+                        yield return StartCoroutine(GameEndingC());
+                    }
+                    else
+                    {
+                        GameManager.Instance.SetCurrentDay(day - 7);
+                    }
                     //Trigger ending here
 
                     //Actually, the game probably loops for a bit. I want to make this ending more conditional, methinks. Hmmmmmm.....
                 }
                 else
                 {
+                    adhdManager.ProgressDay();
+
+                    if (GameManager.Instance.DayNumber >= normalDays.Length + 10)
+                    {
+                        int tasksInProgress = 0;
+                        for (int i = 0; i < activeTasks.Count; i++)
+                        {
+                            if (!activeTasks[i].isChore && activeTasks[i].Progress > 0) { tasksInProgress++; }
+                        }
+
+                        if (tasksInProgress > 3 || GameManager.Instance.Health <= GameManager.Instance.maxHealth / 4 || GameManager.Instance.DayNumber > normalDays.Length + 20)
+                        {
+                            adhdManager.StartPanicMode();
+                        }
+                    }
+
                     foreach (TaskTemplateSO tts in adhdDays[day - normalDays.Length].dayTasks)
                     {
                         InstantiateTask(tts);
+                        yield return new WaitForSeconds(0.5f);
                     }
                 }
             }
@@ -337,14 +392,49 @@ namespace HowDoYouFeel.FocusGame
                 InstantiateTask(repeatNextDay.Dequeue());
                 yield return new WaitForSeconds(0.5f);
             }
+
+            if(inAdhdMode && day - normalDays.Length < adhdDays.Length)
+            {
+                adhdManager.ProgessDayAfterTaskSpawning();
+            }
             yield break;
         }
 
-        void SwitchToADHDMode()
+        IEnumerator SwitchToADHDMode()
         {
-            Debug.LogWarning("Starting ADHD mode not implemented yet");
+            fadePanelAnimator.SetTrigger("ActivateADHDMode");
+            yield return new WaitForSeconds(1.0f);
+
+            //Debug.LogWarning("Starting ADHD mode not implemented yet");\
+            for (int i = activeTasks.Count-1; i >=0; i--)
+            {
+                RemoveTask(activeTasks[i]);
+            }
+
+            repeatNextDay.Clear();            
+
+            GameManager.Instance.Health = GameManager.Instance.maxHealth;
+            GameManager.Instance.Energy = GameManager.Instance.maxEnergy;
+            GameManager.Instance.Dopamine = GameManager.Instance.maxDopamine / 2;
+            GameManager.Instance.Score = 0;
+            GameManager.Instance.sleepParticleSpawner.dopamineParticleAmount = GameManager.Instance.maxDopamine/5;
             inAdhdMode = true;
 
+            GetComponent<ADHDManager>().enabled = true;
+
+            yield return new WaitForSeconds(1.4f);
+        }
+
+        IEnumerator GameEndingC()
+        {
+            fadePanelAnimator.SetTrigger("EndGame");
+            yield return new WaitForSeconds(2.0f);
+            SceneManager.LoadScene(0);
+        }
+
+        public float GetAngle()
+        {
+            return selectableAngles.Dequeue();
         }
     }
 }

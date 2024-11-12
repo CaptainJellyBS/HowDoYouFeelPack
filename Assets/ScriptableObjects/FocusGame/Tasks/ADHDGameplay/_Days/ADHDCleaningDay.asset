@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af6faf6ea5e4aad4c8f380fbc1e7bb14, type: 3}
-  m_Name: 1_ADHDChoreSegment
+  m_Script: {fileID: 11500000, guid: 9b11cbcf0a4c55641b6389e4e27255c9, type: 3}
+  m_Name: ADHDCleaningDay
   m_EditorClassIdentifier: 
-  dopamineReward: -2
-  energyReward: 0
-  healthReward: 0
-  scoreReward: 0
-  index: 1
+  dayTasks:
+  - {fileID: 11400000, guid: 3a584ed335d47ed4baa38595f2ab1661, type: 2}

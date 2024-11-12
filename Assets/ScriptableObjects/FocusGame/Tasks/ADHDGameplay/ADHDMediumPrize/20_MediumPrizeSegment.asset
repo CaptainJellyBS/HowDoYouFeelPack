@@ -15,5 +15,5 @@ MonoBehaviour:
   dopamineReward: -3
   energyReward: 0
   healthReward: 0
-  scoreReward: 50
-  index: 17
+  scoreReward: 0
+  index: 20

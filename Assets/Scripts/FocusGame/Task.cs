@@ -28,7 +28,7 @@ namespace HowDoYouFeel.FocusGame
         public int CurrentEnergy { get; private set; } = 0;
         public int CurrentDopamine { get; private set; } = 0;
 
-        TaskTemplateSO myTemplate;
+        public TaskTemplateSO myTemplate { get; private set; }
 
         private void Start()
         {

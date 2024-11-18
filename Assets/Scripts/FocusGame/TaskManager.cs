@@ -423,6 +423,7 @@ namespace HowDoYouFeel.FocusGame
             GameManager.Instance.Score = 0;
             GameManager.Instance.sleepParticleSpawner.dopamineParticleAmount = GameManager.Instance.maxDopamine/5;
             inAdhdMode = true;
+            selfcareActive = false;
 
             GetComponent<ADHDManager>().enabled = true;
 

@@ -17,12 +17,15 @@ namespace HowDoYouFeel.MainMenu
         public Image fadePanel;
         public TextMeshProUGUI denyText;
         public Button museumButton;
+        public TextMeshProUGUI versionText;
         bool isSwitching = false;
         int museumDenyCounter = 0;
 
         void Start()
         {
             GlobalManager.Instance.CursorVisible = true;
+            Time.timeScale = 1.0f;
+            versionText.text = "v" + Application.version;
         }
         
         public void FadeOutToScene(int buildindex)

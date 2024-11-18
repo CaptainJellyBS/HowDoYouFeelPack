@@ -42,8 +42,8 @@ namespace HowDoYouFeel.Global
                 obj = objects[i];
                 if (obj.activeSelf) { continue; }
 
-                //obj.transform.parent = parent;
-                obj.GetComponent<RectTransform>().SetParent(parent, true);
+                obj.transform.parent = parent;
+                //obj.GetComponent<RectTransform>().SetParent(parent, true);
                 obj.transform.position = position;
                 obj.transform.rotation = rotation;
                 obj.SetActive(true);

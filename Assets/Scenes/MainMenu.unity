@@ -5445,7 +5445,7 @@ PrefabInstance:
     - target: {fileID: 2834758008241063585, guid: e28db6cb92a419f45bd690ec76df556f, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1107204294}
+      objectReference: {fileID: 1479649877}
     - target: {fileID: 2834758008241063585, guid: e28db6cb92a419f45bd690ec76df556f, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 

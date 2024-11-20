@@ -4,19 +4,13 @@ using UnityEngine;
 
 namespace HowDoYouFeel.WordsInWordsGame
 {
-
+    [CreateAssetMenu(fileName = "Dialogue", menuName = "ScriptableObjects/WordsInWordsGame/Dialogue")]
     public class DialogueSO : ScriptableObject
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        public string dialogueSpoken = "\"PLACEHOLDER\"";
+        public string dialogueTone = "PLACEHOLDER";
+        public string dialogueBodyLanguage = "PLACEHOLDER";
+        public string dialogueSectionOneOverride = string.Empty;
+        public string dialogueSectionTwoOverride = string.Empty;
     }
 }

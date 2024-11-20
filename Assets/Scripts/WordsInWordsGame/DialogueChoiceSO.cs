@@ -4,19 +4,9 @@ using UnityEngine;
 
 namespace HowDoYouFeel.WordsInWordsGame
 {
-
-    public class DialogueChoiceSO : MonoBehaviour
+    [CreateAssetMenu(fileName = "DialogueChoice", menuName = "ScriptableObjects/WordsInWordsGame/DialogueChoice")]
+    public class DialogueChoiceSO : ScriptableObject
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        public DialogueSO[] dialogueOptions;
     }
 }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e870ed7662c604d86ac784f17651fc, type: 3}
+  m_Name: ManaDialogueChoice01
+  m_EditorClassIdentifier: 
+  dialogueOptions:
+  - {fileID: 11400000, guid: e2a0ccfc8c040524490642b6252688da, type: 2}
+  - {fileID: 11400000, guid: 6d0da41656d2b9340a23ff830cedcc25, type: 2}
+  - {fileID: 11400000, guid: f181d37e2b5b966428e23fd0f22679e8, type: 2}

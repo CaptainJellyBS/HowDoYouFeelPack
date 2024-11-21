@@ -20,7 +20,7 @@ namespace HowDoYouFeel.WordsInWordsGame
             ShowDialogue(debugDialogue, true, 0);
         }
 
-        public void ShowDialogue(DialogueSO dialogue, bool showToneAndBodyLanguage, int section)
+        public Coroutine ShowDialogue(DialogueSO dialogue, bool showToneAndBodyLanguage, int section)
         {
             if(section != 0 && section != 1) { Debug.LogError("Section should be 0 or 1"); }
             if(dialogueRoutine != null) { StopCoroutine(dialogueRoutine); }
@@ -30,6 +30,7 @@ namespace HowDoYouFeel.WordsInWordsGame
             if(dialogue.dialogueSectionTwoOverride.Length > 0 && section == 1) { d = dialogue.dialogueSectionTwoOverride; }
 
             dialogueRoutine = StartCoroutine(PlayDialogueC(d, dialogue.dialogueTone, dialogue.dialogueBodyLanguage, showToneAndBodyLanguage));
+            return dialogueRoutine;
         }
 
         IEnumerator PlayDialogueC(string spoken, string tone, string bodyLanguage, bool showToneAndBodyLanguage)
@@ -38,17 +39,21 @@ namespace HowDoYouFeel.WordsInWordsGame
             int bodyLanguageIndex = 0;
             textMesh.text = CreateDialogue(spoken, tone, bodyLanguage, showToneAndBodyLanguage, spokenIndex, bodyLanguageIndex);
 
-            while(showToneAndBodyLanguage && bodyLanguageIndex < bodyLanguage.Length)
+            while(showToneAndBodyLanguage && bodyLanguageIndex <= bodyLanguage.Length)
             {
                 textMesh.text = CreateDialogue(spoken, tone, bodyLanguage, showToneAndBodyLanguage, spokenIndex, bodyLanguageIndex);
-                yield return new WaitForSeconds(textDelay/4);
+                if (textDelay > 0.0f) { yield return new WaitForSeconds(textDelay / 2.5f); }
                 bodyLanguageIndex++;
             }
+
+            bodyLanguageIndex = Mathf.Min(bodyLanguageIndex, bodyLanguage.Length);
+
+            if (showToneAndBodyLanguage) { yield return new WaitForSeconds(0.25f); }
 
             while(spokenIndex <= spoken.Length)
             {
                 textMesh.text = CreateDialogue(spoken, tone, bodyLanguage, showToneAndBodyLanguage, spokenIndex, bodyLanguageIndex);
-                yield return new WaitForSeconds(textDelay);
+                if (textDelay > 0.0f) { yield return new WaitForSeconds(textDelay); }
                 spokenIndex++;
             }
         }

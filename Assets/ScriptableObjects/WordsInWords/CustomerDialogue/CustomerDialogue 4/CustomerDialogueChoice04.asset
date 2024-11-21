@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e870ed7662c604d86ac784f17651fc, type: 3}
+  m_Name: CustomerDialogueChoice04
+  m_EditorClassIdentifier: 
+  dialogueOptions:
+  - {fileID: 11400000, guid: 5e4318d697707a34cb46ed1ddc2e2807, type: 2}
+  - {fileID: 11400000, guid: 2d3f064dfc57a8949abd0e56d2a99d8c, type: 2}
+  - {fileID: 11400000, guid: 241663af298993243bc8de6594654926, type: 2}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace HowDoYouFeel.WordsInWordsGame
 {
@@ -67,6 +68,7 @@ namespace HowDoYouFeel.WordsInWordsGame
                 button0.SetDialogue(sectionOneManaDialogue[i].dialogueOptions[0], false, 0);
                 button1.SetDialogue(sectionOneManaDialogue[i].dialogueOptions[1], false, 0);
                 button2.SetDialogue(sectionOneManaDialogue[i].dialogueOptions[2], false, 0);
+                EventSystem.current.SetSelectedGameObject(button0.gameObject);
 
                 while(lastReply == null)
                 {
@@ -102,6 +104,8 @@ namespace HowDoYouFeel.WordsInWordsGame
                 button0.SetDialogue(customerDialogue[i].dialogueOptions[0], true, 1);
                 button1.SetDialogue(customerDialogue[i].dialogueOptions[1], true, 1);
                 button2.SetDialogue(customerDialogue[i].dialogueOptions[2], true, 1);
+
+                EventSystem.current.SetSelectedGameObject(button0.gameObject);
 
                 while (lastReply == null)
                 {

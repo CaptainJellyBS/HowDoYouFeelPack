@@ -432,6 +432,7 @@ namespace HowDoYouFeel.FocusGame
 
         IEnumerator GameEndingC()
         {
+            GlobalManager.Instance.UpdateFocusGameFinished(true);
             fadePanelAnimator.SetTrigger("EndGame");
             yield return new WaitForSeconds(2.0f);
             SceneManager.LoadScene(0);

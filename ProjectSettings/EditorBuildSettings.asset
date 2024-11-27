@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FocusGame.unity
     guid: 6943a3a1725063b489fc0b78c759e42e
+  - enabled: 1
+    path: Assets/Scenes/WordsInWordsGame.unity
+    guid: 034cbfea07ea1d44b9ff07e78f761c5b
   m_configObjects: {}

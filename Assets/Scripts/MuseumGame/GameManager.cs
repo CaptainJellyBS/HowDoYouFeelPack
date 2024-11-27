@@ -237,8 +237,9 @@ namespace HowDoYouFeel.MuseumGame
             endingReached = true;
 
             MakeGameUnplayable();
+            GlobalManager.Instance.UpdateMuseumGameFinished(true);
 
-            float gt = 28.0f;
+            float gt = 15.0f;
             while (gt >= 0.0f && !playerGaveUp)
             {
                 yield return null;

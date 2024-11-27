@@ -1,12 +1,18 @@
+using HowDoYouFeel.Global;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace HowDoYouFeel.WordsInWordsGame
 {
     public class GameManager : MonoBehaviour
     {
+        public AudioSource musicAS;
+        public AudioClip backgroundMusicSec0, backupMusicSec0, backgroundMusicSec1, backupMusicSec1;
+        float origVolume;
+
         public DialogueChoiceSO[] sectionOneManaDialogue;
         public DialogueChoiceSO[] customerDialogue;
         public DialogueSO[] sectionTwoManaDialogue;
@@ -20,6 +26,8 @@ namespace HowDoYouFeel.WordsInWordsGame
 
         public Transform debugCameraPos;
 
+        Coroutine musicRoutine;
+
         public static GameManager Instance { get; private set; }
 
         private void Awake()
@@ -30,12 +38,14 @@ namespace HowDoYouFeel.WordsInWordsGame
 
         private void Start()
         {
+            GlobalManager.Instance.CursorVisible = true;
+            origVolume = musicAS.volume;
             buttonsPanel.SetActive(false);
             customerSpeechBubble.gameObject.SetActive(false);
             manaSpeechBubble.gameObject.SetActive(false);
             selfSpeechBubble.gameObject.SetActive(false);
             lastReply = null;
-            //   StartCoroutine(GameplayLoopC());
+            musicRoutine = StartCoroutine(MusicC(backgroundMusicSec0, backupMusicSec0));
         }
 
         public void Reply(DialogueSO reply)
@@ -48,8 +58,14 @@ namespace HowDoYouFeel.WordsInWordsGame
             StartCoroutine(GameplayLoopC());
         }
 
-        IEnumerator GameplayLoopC()
+        public void EndGame()
         {
+            //Permanent data stuff here
+            SceneManager.LoadScene(0);
+        }
+
+        IEnumerator GameplayLoopC()
+        {            
             Animator animator = GetComponent<Animator>();
 
             buttonsPanel.SetActive(false);
@@ -93,7 +109,18 @@ namespace HowDoYouFeel.WordsInWordsGame
             selfSpeechBubble.gameObject.SetActive(false);
             lastReply = null;
 
-            yield return new WaitForSeconds(4.0f);
+            float t = 0.0f;
+            while(t <= 1.0f)
+            {
+                yield return null;
+                t += Time.deltaTime / 2.0f;
+                musicAS.volume = Mathf.Lerp(origVolume, 0.0f, t);
+            }
+
+            StopCoroutine(musicRoutine);
+            musicRoutine = StartCoroutine(MusicC(backgroundMusicSec1, backupMusicSec1));
+
+            yield return new WaitForSeconds(2.0f);
 
             for (int i = 0; i < customerDialogue.Length; i++)
             {
@@ -125,9 +152,47 @@ namespace HowDoYouFeel.WordsInWordsGame
                 yield return manaSpeechBubble.ShowDialogue(sectionTwoManaDialogue[i], true, 1);
             }
 
+            GlobalManager.Instance.UpdateWordsInWordsGameFinished(true);
             animator.SetTrigger("GameEnd");
-            Debug.LogWarning("GAME END NOT IMPLEMENTED");
+
+            float ti = 0.0f;
+            while(ti<=1.0f)
+            {
+                yield return null;
+                ti += Time.deltaTime / 2.0f;
+                musicAS.volume = Mathf.Lerp(origVolume, 0.0f, ti);
+            }
+
+            StopCoroutine(musicRoutine);
+            musicAS.Stop();
+            //Debug.LogWarning("GAME END NOT IMPLEMENTED");
             //Game end sequence here
+        }
+
+        IEnumerator MusicC(AudioClip music, AudioClip backup)
+        {
+            musicAS.Stop();
+            musicAS.volume = 0.0f;
+            musicAS.clip = music;
+            musicAS.Play();
+
+            float t = 0.0f;
+            while(t<=1.0f)
+            {
+                yield return null;
+                t += Time.deltaTime /2.0f;
+                musicAS.volume = Mathf.Lerp(0.0f, origVolume, t);
+            }
+
+            while(true)
+            {
+                if (!musicAS.isPlaying)
+                {
+                    musicAS.clip = backup;
+                    musicAS.Play();
+                }
+                yield return new WaitForSeconds(1.0f);
+            }
         }
     }
 }

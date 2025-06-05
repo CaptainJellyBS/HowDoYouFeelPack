@@ -21,7 +21,7 @@ namespace HowDoYouFeel.GeniusGame
         // Start is called before the first frame update
         void Start()
         {
-
+            Debug.LogWarning("Note to self: Make sure colliders are not moved up with hiding objects!");
         }
 
         public void SetPlayerFloor(int floor)

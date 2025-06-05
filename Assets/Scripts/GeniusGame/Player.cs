@@ -12,13 +12,21 @@ namespace HowDoYouFeel.GeniusGame
     public class Player : MonoBehaviour
     {
         public static Player Instance { get; private set; }
-        public float rotateSpeed, walkSpeed, jumpSpeed; 
+        public float rotateSpeed, walkSpeed, jumpSpeed;
+        public Transform groundedRaycastOrigin;
+        public LayerMask groundedRaycastLayerMask;
+        public float groundedRaycastDistance = 1.125f;
+        public Vector3 groundedBoxExtents;
+        public float maxSlopeAngle = 45.0f;
+
         bool isGrounded = false;
+        bool canDoubleJump;
+        Vector3 groundNormal;
 
         Animator animator;
         Rigidbody rb;
 
-        Vector2 moveInput;
+        Vector2 moveInput;        
         Quaternion targetRot;
 
         private void Awake()
@@ -30,14 +38,16 @@ namespace HowDoYouFeel.GeniusGame
         // Start is called before the first frame update
         void Start()
         {
+            groundNormal = Vector3.up;
             animator = GetComponentInChildren<Animator>();
             rb = GetComponent<Rigidbody>();
             targetRot = transform.rotation;
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
+            CheckGrounded();
             HandleInput();
         }
 
@@ -45,7 +55,8 @@ namespace HowDoYouFeel.GeniusGame
         {
             if (isGrounded)
             {
-                rb.velocity = new Vector3(moveInput.x * walkSpeed, rb.velocity.y, moveInput.y * walkSpeed);
+                //rb.velocity = new Vector3(moveInput.x * walkSpeed, rb.velocity.y, moveInput.y * walkSpeed);
+                rb.velocity = Vector3.ProjectOnPlane(new Vector3(moveInput.x * walkSpeed, 0, moveInput.y * walkSpeed), groundNormal);
             }
 
             if (moveInput.magnitude != 0 && isGrounded)
@@ -69,6 +80,37 @@ namespace HowDoYouFeel.GeniusGame
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
         }
 
+        void CheckGrounded()
+        {
+            RaycastHit hit;
+            if(Physics.BoxCast(groundedRaycastOrigin.position, groundedBoxExtents, Vector3.down, out hit, 
+                transform.rotation, groundedRaycastDistance, groundedRaycastLayerMask))
+            {
+                SetGrounded(Vector3.Angle(Vector3.up, hit.normal) <= maxSlopeAngle, hit.normal);
+
+                if (isGrounded)
+                {
+                    //eww why
+                    transform.Translate(Vector3.up * Mathf.Max(0.0f,
+                       hit.point.y - (groundedRaycastOrigin.position.y - groundedRaycastDistance - groundedBoxExtents.y + 0.025f) ));
+                }
+            }
+            else
+            {
+                SetGrounded(false, Vector3.up);
+            }
+        }
+
+        void SetGrounded(bool g, Vector3 normal)
+        {
+            isGrounded = g;
+            animator.SetBool("IsGrounded", isGrounded);
+            rb.useGravity = !isGrounded;
+            if (isGrounded) { rb.velocity = Vector3.Scale(rb.velocity, new Vector3(1.0f, 0.0f, 1.0f)); }
+            groundNormal = isGrounded ? normal : Vector3.up; //lol this is so ugly
+            canDoubleJump = canDoubleJump || isGrounded;
+        }
+
         void OnWalk(InputValue value)
         {
             moveInput = value.Get<Vector2>();
@@ -78,27 +120,10 @@ namespace HowDoYouFeel.GeniusGame
         void OnJump(InputValue value)
         {
             if (!isGrounded) { return; }
-            isGrounded = false;
+            SetGrounded(false, Vector3.up);
             animator.SetTrigger("Jump");
-            rb.velocity += Vector3.up * jumpSpeed;            
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.collider.CompareTag("Ground"))
-            {
-                isGrounded = true;
-                animator.SetBool("IsGrounded", true);
-            }
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            if (collision.collider.CompareTag("Ground"))
-            {
-                isGrounded = false;
-                animator.SetBool("IsGrounded", false);
-            }
+            rb.velocity += Vector3.up * jumpSpeed;
+            transform.Translate(Vector3.up * jumpSpeed * Time.fixedDeltaTime * 2.0f);
         }
     }
 }

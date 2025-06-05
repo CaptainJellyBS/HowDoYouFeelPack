@@ -45,7 +45,7 @@ namespace HowDoYouFeel.GeniusGame
         {
             switch (hoType)
             {
-                case HidingObjectType.Floor: return floor < GameManager.Instance.currentPlayerFloor;
+                case HidingObjectType.Floor: return floor > GameManager.Instance.currentPlayerFloor;
                 case HidingObjectType.Wall: 
                     return floor == GameManager.Instance.currentPlayerFloor
                         && Vector3.Dot(transform.right, Player.Instance.transform.position - transform.position) > 0;

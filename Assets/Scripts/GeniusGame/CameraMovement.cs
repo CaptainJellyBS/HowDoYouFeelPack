@@ -11,7 +11,6 @@ namespace HowDoYouFeel.GeniusGame
 
         private void Start()
         {
-            Debug.LogWarning("Camera Vertical Movement has to still be integrated");
         }
 
         private void Update()

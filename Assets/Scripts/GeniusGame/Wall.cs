@@ -7,13 +7,16 @@ namespace HowDoYouFeel.GeniusGame
     public enum WallDirection { NorthWest, NorthEast, SouthWest, SouthEast }
     public enum WallSegmentType { Wall, Door, None }
 
+    [RequireComponent(typeof(HidingObject))]
     public class Wall : MonoBehaviour
     {
         public Transform wallParent;
-        public HidingObject[] wallSegments;
+        HidingObject hidingObject;
         public GameObject[] wallConnectors;
-        public GameObject[] wallModels;
-        public GameObject[] doorModels;
+        public GameObject[] wallTops;
+        public GameObject[] wallBottoms;
+        public GameObject[] doorTops;
+        public GameObject[] doorBottoms;
         public int floor = 0;
 
         public WallSegmentType typeSegment0 = WallSegmentType.Wall;
@@ -24,59 +27,70 @@ namespace HowDoYouFeel.GeniusGame
         public WallDirection wallDirection;
         public HidingAnimationType animationType;
 
-        public Texture2D texture;
+        private void Start()
+        {
+            UpdateWall();
+        }
 
         [ContextMenu("Update Wall")]
         void UpdateWall()
         {
+            hidingObject = GetComponent<HidingObject>();
             UpdateRotation();
             UpdateSegmentTypes();
             UpdateHidingAnimationType();
-            UpdateRenderers();
 
         }
 
         void UpdateRotation()
         {
-            Debug.LogWarning("Updating Rotation has not been implemented yet");
+            switch(wallDirection)
+            {
+                case WallDirection.NorthEast:
+                    transform.localRotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+                    wallParent.localRotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+                    break;
+                case WallDirection.NorthWest:
+                    transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+                    wallParent.localRotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+
+                    break;
+                case WallDirection.SouthEast:
+                    transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+                    wallParent.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                    break;
+                case WallDirection.SouthWest: 
+                    transform.localRotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+                    wallParent.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+
+                    break;
+            }
         }
 
         void UpdateSegmentTypes()
         {
-            wallModels[0].SetActive(typeSegment0 == WallSegmentType.Wall); doorModels[0].SetActive(typeSegment0 == WallSegmentType.Door);
-            wallModels[1].SetActive(typeSegment1 == WallSegmentType.Wall); doorModels[1].SetActive(typeSegment1 == WallSegmentType.Door);
-            wallModels[2].SetActive(typeSegment2 == WallSegmentType.Wall); doorModels[2].SetActive(typeSegment2 == WallSegmentType.Door);
-            wallModels[3].SetActive(typeSegment3 == WallSegmentType.Wall); doorModels[3].SetActive(typeSegment3 == WallSegmentType.Door);
+            wallBottoms[0].SetActive(typeSegment0 == WallSegmentType.Wall); wallTops[0].SetActive(typeSegment0 == WallSegmentType.Wall); 
+            wallBottoms[1].SetActive(typeSegment1 == WallSegmentType.Wall); wallTops[1].SetActive(typeSegment1 == WallSegmentType.Wall); 
+            wallBottoms[2].SetActive(typeSegment2 == WallSegmentType.Wall); wallTops[2].SetActive(typeSegment2 == WallSegmentType.Wall); 
+            wallBottoms[3].SetActive(typeSegment3 == WallSegmentType.Wall); wallTops[3].SetActive(typeSegment3 == WallSegmentType.Wall); 
+
+            doorBottoms[0].SetActive(typeSegment0 == WallSegmentType.Door); doorTops[0].SetActive(typeSegment0 == WallSegmentType.Door);
+            doorBottoms[1].SetActive(typeSegment1 == WallSegmentType.Door); doorTops[1].SetActive(typeSegment1 == WallSegmentType.Door);
+            doorBottoms[2].SetActive(typeSegment2 == WallSegmentType.Door); doorTops[2].SetActive(typeSegment2 == WallSegmentType.Door);
+            doorBottoms[3].SetActive(typeSegment3 == WallSegmentType.Door); doorTops[3].SetActive(typeSegment3 == WallSegmentType.Door);
         }
 
         void UpdateHidingAnimationType()
         {
-            foreach(HidingObject h in wallSegments)
-            {
-                h.floor = floor;
-                h.animationType = animationType;
-                h.animValue = animationType == HidingAnimationType.Translation ?
+                hidingObject.floor = floor;
+                hidingObject.animationType = animationType;
+                hidingObject.animValue = animationType == HidingAnimationType.Translation ?
                     new Vector3(0.0f,30.0f,0.0f) :
-                    new Vector3(0.0f,0.0f,170.0f);
-            }
+                    new Vector3(-170.0f,0.0f,0.0f);
 
             foreach(GameObject g in wallConnectors)
             {
                 g.SetActive(animationType == HidingAnimationType.Translation);
-            }
-        }
-
-        void UpdateRenderers()
-        {
-            for (int i = 0; i < wallSegments.Length; i++)
-            {
-                Renderer[] renderers = wallSegments[i].GetComponentsInChildren<Renderer>(true);
-                foreach(Renderer r in renderers)
-                {
-                    r.material.SetTexture("_Texture", texture);
-                    r.material.SetFloat("_SegmentIndex", i);
-                    //r.material.SetInteger("SegmentIndex", i);
-                }
             }
         }
     }

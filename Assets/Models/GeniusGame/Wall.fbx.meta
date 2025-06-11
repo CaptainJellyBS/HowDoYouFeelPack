@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 13e6bd26423f057419847b6e2b1412cd
+guid: 3407f610ab24d3548b3d0658578a714a
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 40214dfc487c5684480fe80bad5561ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Texture
-    second: {fileID: 2100000, guid: 34f385573b5b4c543adaecf5274fb052, type: 2}
+    second: {fileID: 2100000, guid: 611dad5692f250a46be003b958f7aeb3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -61,7 +66,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    optimizeBones: 0
+    optimizeBones: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

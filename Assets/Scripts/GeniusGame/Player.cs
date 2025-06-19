@@ -16,6 +16,7 @@ namespace HowDoYouFeel.GeniusGame
         public Transform groundedRaycastOrigin;
         public LayerMask groundedRaycastLayerMask;
         public float groundedRaycastDistance = 1.125f;
+        public float stepDownDistance = 0.55f;
         public Vector3 groundedBoxExtents;
         public float maxSlopeAngle = 45.0f;
 
@@ -83,15 +84,16 @@ namespace HowDoYouFeel.GeniusGame
         void CheckGrounded()
         {
             RaycastHit hit;
+            float ed = isGrounded ? stepDownDistance : 0.0f;
             if(Physics.BoxCast(groundedRaycastOrigin.position, groundedBoxExtents, Vector3.down, out hit, 
-                transform.rotation, groundedRaycastDistance, groundedRaycastLayerMask))
+                transform.rotation, groundedRaycastDistance + ed, groundedRaycastLayerMask))
             {
                 SetGrounded(Vector3.Angle(Vector3.up, hit.normal) <= maxSlopeAngle, hit.normal);
 
                 if (isGrounded)
                 {
                     //eww why
-                    transform.Translate(Vector3.up * Mathf.Max(0.0f,
+                    transform.Translate(Vector3.up * Mathf.Max(stepDownDistance * -1,
                        hit.point.y - (groundedRaycastOrigin.position.y - groundedRaycastDistance - groundedBoxExtents.y + 0.025f) ));
                 }
             }

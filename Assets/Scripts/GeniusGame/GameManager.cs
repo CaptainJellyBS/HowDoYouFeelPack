@@ -10,7 +10,6 @@ namespace HowDoYouFeel.GeniusGame
         public int currentPlayerFloor = 0;
         DialogueManager dm;
 
-        public Transform teacherDialoguePoint;
 
         private void Awake()
         {
@@ -27,8 +26,6 @@ namespace HowDoYouFeel.GeniusGame
             Debug.LogWarning("Note to self: Make sure colliders are not moved up with hiding objects!");
             dm = GetComponent<DialogueManager>();
 
-            Debug.LogWarning("DIALOGUE DEBUG ACTIVE");
-            dm.PlayDialogue("OMG A TEST? HOW DELIGHTFUL!", teacherDialoguePoint);
         }
 
         public void SetPlayerFloor(int floor)

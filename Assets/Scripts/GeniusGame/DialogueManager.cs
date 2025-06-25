@@ -13,6 +13,7 @@ namespace HowDoYouFeel.GeniusGame
         public float characterLength = 0.2f;
         public float waitUntilHide = 2.0f;
         public float hidingTime = 0.5f;
+        public float pauseBetweenDialogue = 1.0f;
         Coroutine dialogueRoutine;
         public LayerMask speechBubbleBoxcastMask;
 
@@ -25,15 +26,24 @@ namespace HowDoYouFeel.GeniusGame
 
         IEnumerator PlayDialogueC(string dialogueText, Transform targetSpeaker)
         {
+            dialogueTextMesh.text = string.Empty;
+
+            speechBubble.position = targetSpeaker.position + Vector3.up * hidingHeight;
             speechBubble.gameObject.SetActive(true);
 
             for (float t = 0; t < 1.0f; t+=Time.deltaTime / hidingTime)
             {
                 yield return null;
-                speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position + Vector3.up * Mathf.Lerp(hidingHeight, 0, t)), 10.0f * Time.deltaTime);
+                speechBubble.position = Vector3.MoveTowards(speechBubble.position, 
+                    CalculateSBPos(targetSpeaker.position + Vector3.up * Mathf.Lerp(hidingHeight, 0, t)), 50.0f * Time.deltaTime);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            //yield return new WaitForSeconds(0.5f);
+            for (float t = 0; t < 0.5f; t+=Time.deltaTime)
+            {
+                yield return null;
+                speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position), 10.0f * Time.deltaTime);
+            }
 
             for (int i = 0; i < dialogueText.Length; i++)
             {
@@ -55,22 +65,21 @@ namespace HowDoYouFeel.GeniusGame
             }
 
             dialogueTextMesh.text = dialogueText;
-            //yield return new WaitForSeconds(waitUntilHide);
             for (float t = 0; t < waitUntilHide; t+=Time.deltaTime)
             {
                 speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position), 10.0f * Time.deltaTime);
-
                 yield return null;
             }
            
             for (float t = 0; t < 1.0f; t += Time.deltaTime / hidingTime)
             {
                 yield return null;
-                speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position + Vector3.up * Mathf.Lerp(0, hidingHeight, t)), 10.0f * Time.deltaTime);
+                speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position + Vector3.up * Mathf.Lerp(0, hidingHeight, t)), 50.0f * Time.deltaTime);
             }
 
             dialogueTextMesh.text = string.Empty;
             speechBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(pauseBetweenDialogue);
 
             dialogueRoutine = null;
         }
@@ -94,7 +103,7 @@ namespace HowDoYouFeel.GeniusGame
 
             RaycastHit hit;
             if(Physics.BoxCast(targetPos + new Vector3(-0.43f, 9.83f, -2.46f), 
-                new Vector3(0.1f, 2.3f, 2.8f), Vector3.down, out hit, speechBubble.rotation, 5.5f, speechBubbleBoxcastMask))
+                new Vector3(0.1f, 2.3f, 3.8f), Vector3.down, out hit, speechBubble.rotation, 5.5f, speechBubbleBoxcastMask))
             {
                 return new Vector3(targetPos.x, Mathf.Max(targetPos.y, hit.point.y), targetPos.z);
             }

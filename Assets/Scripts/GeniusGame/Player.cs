@@ -29,6 +29,7 @@ namespace HowDoYouFeel.GeniusGame
 
         Vector2 moveInput;        
         Quaternion targetRot;
+        Interactible currentInteractible;
 
         private void Awake()
         {
@@ -50,6 +51,40 @@ namespace HowDoYouFeel.GeniusGame
         {
             CheckGrounded();
             HandleInput();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Interactible interactible = other.GetComponent<Interactible>();
+            if(interactible != null)
+            {
+                SetCurrentInteractible(interactible);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            Interactible interactible = other.GetComponent<Interactible>();
+            if (interactible == currentInteractible)
+            {
+                SetCurrentInteractible(null);
+            }
+        }
+
+        void SetCurrentInteractible(Interactible i)
+        {
+            if(currentInteractible == i) { return; }
+            if(currentInteractible != null)
+            {
+                currentInteractible.Exit();
+                currentInteractible = null;
+            }
+
+            if (i != null)
+            {
+                currentInteractible = i;
+                currentInteractible.Enter();
+            }
         }
 
         void HandleInput()
@@ -126,6 +161,12 @@ namespace HowDoYouFeel.GeniusGame
             animator.SetTrigger("Jump");
             rb.velocity += Vector3.up * jumpSpeed;
             transform.Translate(Vector3.up * jumpSpeed * Time.fixedDeltaTime * 2.0f);
+        }
+
+        void OnInteract(InputValue value)
+        {
+            if(currentInteractible == null) { return; }
+            currentInteractible.Interact();
         }
     }
 }

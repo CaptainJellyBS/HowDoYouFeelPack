@@ -16,8 +16,8 @@ TagManager:
   - Player
   - PlayerTrigger
   - DontReceiveLighting
-  - 
-  - 
+  - GG_IChecker
+  - GG_Interactible
   - 
   - 
   - 

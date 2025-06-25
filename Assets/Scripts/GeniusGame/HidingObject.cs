@@ -33,6 +33,7 @@ namespace HowDoYouFeel.GeniusGame
         private void Update()
         {
             t += (Time.deltaTime / hideTime) * (isHidden() ? 1.0f : -1.0f);
+            //hidingObject.gameObject.SetActive(t < 1.0f);
             t = Mathf.Clamp(t, 0.0f, 1.0f);
 
             switch(animationType)

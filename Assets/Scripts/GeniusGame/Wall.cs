@@ -39,7 +39,6 @@ namespace HowDoYouFeel.GeniusGame
             UpdateRotation();
             UpdateSegmentTypes();
             UpdateHidingAnimationType();
-
         }
 
         void UpdateRotation()

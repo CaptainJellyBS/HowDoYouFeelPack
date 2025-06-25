@@ -41,7 +41,7 @@ namespace HowDoYouFeel.GeniusGame
                 transform.position -= transform.right * xzSize;
             }
 
-            float y = GameManager.Instance.currentPlayerFloor * 10.0f;
+            float y = GameManager.Instance.currentPlayerFloor * height;
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
         }
     }

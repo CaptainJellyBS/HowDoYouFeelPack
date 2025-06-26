@@ -17,6 +17,8 @@ namespace HowDoYouFeel.GeniusGame
         public Transform teacherDialoguePoint;
         public Transform[] teacherPathm1, teacherPath0, teacherPath1, teacherPath2;
 
+        public SimonSays simonSays;
+
         
 
     private void Start()
@@ -60,16 +62,21 @@ namespace HowDoYouFeel.GeniusGame
 
             yield return dm.PlayDialogue("Well done!", teacherDialoguePoint);
 
-            dm.PlayDialogue("Come with me!", teacherDialoguePoint);
+            dm.PlayDialogue("Alright. Come with me!", teacherDialoguePoint);
 
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(0.35f);
 
             teacher.AddPath(teacherPath2);
             teacherOnDest = false;
 
             while (!teacherOnDest) { yield return null; }
 
-            yield return dm.PlayDialogue("WOWOWOWOW THIS WORKS!", teacherDialoguePoint);
+            yield return dm.PlayDialogue("This is a puzzle. Go do the puzzle!", teacherDialoguePoint);
+
+            yield return simonSays.StartPlay();
+
+            yield return dm.PlayDialogue("Well done omg!!!!!!!!", teacherDialoguePoint);
+            doors[1].SetDoor(true);
 
         }
 

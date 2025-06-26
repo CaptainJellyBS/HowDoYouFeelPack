@@ -195,5 +195,10 @@ namespace HowDoYouFeel.Global
         {
             Application.OpenURL(url);
         }
+
+        public void ConsoleLog(string text)
+        {
+            Debug.Log(text);
+        }
     }
 }

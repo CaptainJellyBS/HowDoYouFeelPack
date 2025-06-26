@@ -103,7 +103,7 @@ namespace HowDoYouFeel.GeniusGame
 
             RaycastHit hit;
             if(Physics.BoxCast(targetPos + new Vector3(-0.43f, 9.83f, -2.46f), 
-                new Vector3(0.1f, 2.3f, 3.8f), Vector3.down, out hit, speechBubble.rotation, 5.5f, speechBubbleBoxcastMask))
+                new Vector3(0.1f, 2.3f, 3.2f), Vector3.down, out hit, speechBubble.rotation, 5.5f, speechBubbleBoxcastMask))
             {
                 return new Vector3(targetPos.x, Mathf.Max(targetPos.y, hit.point.y), targetPos.z);
             }

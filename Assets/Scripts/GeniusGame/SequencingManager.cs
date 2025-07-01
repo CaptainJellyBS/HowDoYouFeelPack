@@ -10,16 +10,13 @@ namespace HowDoYouFeel.GeniusGame
         public DialogueManager dm;
         public Door[] doors;
 
-        bool teacherOnDest = false;
-
         [Header("Teacher NPC")]
         public NPC_Pathwalker teacher;
         public Transform teacherDialoguePoint;
-        public Transform[] teacherPathm1, teacherPath0, teacherPath1, teacherPath2;
+        public GameObject teacherPathsParent;
+        [TextArea] public List<string> teacherDialogue;
 
-        public SimonSays simonSays;
-
-        
+        public SimonSays simonSays;        
 
     private void Start()
         {
@@ -29,58 +26,69 @@ namespace HowDoYouFeel.GeniusGame
         IEnumerator TestSequenceC()
         {
             Debug.LogWarning("DEBUG SEQUENCE ACTIVE");
+            NPC_Path[] teacherPaths = teacherPathsParent.GetComponentsInChildren<NPC_Path>();
             
-            teacherOnDest = false;
             teacher.StartPathWalk(); 
             
             yield return new WaitForSeconds(1.0f);
 
-            teacher.AddPath(teacherPathm1);
-            teacherOnDest = false;
-            yield return StartCoroutine(WaitForTeacherToReachDestC());
+            yield return WalkPath(teacher, teacherPaths[0]);
 
             doors[0].SetDoor(true);
-            teacher.AddPath(teacherPath0);
-            teacherOnDest = false;
+            yield return WalkPath(teacher, teacherPaths[1]);
 
-            yield return StartCoroutine(WaitForTeacherToReachDestC());
-            teacherOnDest = false;
+            yield return dm.PlayDialogue(teacherDialogue[0], teacherDialoguePoint);
+            yield return dm.PlayDialogue(teacherDialogue[1], teacherDialoguePoint);
 
-            yield return dm.PlayDialogue("Hello there! Thank you for waiting.", teacherDialoguePoint);
-            yield return dm.PlayDialogue("I am Ms. Amy. I will be your Life Tutorial teacher.", teacherDialoguePoint);
-            yield return dm.PlayDialogue("First I will teach you how to walk.", teacherDialoguePoint);
+            Coroutine tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[2]), 1.0f, 0.0f);
+                        
+            yield return dm.PlayDialogue(teacherDialogue[2], teacherDialoguePoint, 2.0f, tc);
 
-            teacher.AddPath(teacherPath1);
-            teacherOnDest = false;
-            
-            yield return dm.PlayDialogue("Like this!", teacherDialoguePoint);
+            tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[3]), dm.GetDialogueTime(teacherDialogue[3]) + 0.5f, 0.0f);
+            yield return dm.PlayDialogue(teacherDialogue[3], teacherDialoguePoint, 2.0f, tc);
 
-            yield return StartCoroutine(WaitForTeacherToReachDestC());
+            yield return dm.PlayDialogue(teacherDialogue[4], teacherDialoguePoint);
 
-            yield return dm.PlayDialogue("Well done!", teacherDialoguePoint);
+            tc = simonSays.StartPlay(dm.GetDialogueTime(teacherDialogue[5]));
+            yield return dm.PlayDialogue(teacherDialogue[5], teacherDialoguePoint, 2.0f, tc);
 
-            teacher.AddPath(teacherPath2);
-            teacherOnDest = false;
-            Coroutine tc = StartCoroutine(WaitForTeacherToReachDestC());
-            yield return dm.PlayDialogue("Alright. Come with me!", teacherDialoguePoint, 2.0f, tc);
-
-            yield return dm.PlayDialogue("This is a puzzle. Go do the puzzle!", teacherDialoguePoint);
-
-            yield return simonSays.StartPlay();
-
-            yield return dm.PlayDialogue("Well done omg!!!!!!!!", teacherDialoguePoint);
+            yield return dm.PlayDialogue(teacherDialogue[6], teacherDialoguePoint);
             doors[1].SetDoor(true);
 
+            tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[4]), dm.GetDialogueTime(teacherDialogue[7]), 0.0f);
+
+            yield return dm.PlayDialogue(teacherDialogue[7], teacherDialoguePoint, 2.0f, tc);
+
+            tc = teacher.Jump(teacherPaths[5].path[0], teacherPaths[5].path[1], 3.5f, 0.5f);
+            yield return dm.PlayDialogue(teacherDialogue[8], teacherDialoguePoint, 2.0f, tc);
         }
 
-        IEnumerator WaitForTeacherToReachDestC()
+        //surely we can refactor this in a way to make it NPC generic?
+        Coroutine WalkPath(NPC_Pathwalker npc, NPC_Path path)
         {
-            while (!teacherOnDest) { yield return null; }
+            return StartCoroutine(WalkPathC(npc, path));
         }
 
-        public void TeacherReachedDest()
+        IEnumerator WalkPathC(NPC_Pathwalker npc, NPC_Path path)
         {
-            teacherOnDest = true;
+            npc.AddPath(path);
+            yield return null;
+
+            while (!npc.HasReachedDest) { yield return null; }
+        }
+
+        Coroutine DelayedCoroutine(IEnumerator c, float startDelay, float endDelay)
+        {
+            return StartCoroutine(DelayedCoroutineC(c, startDelay, endDelay));
+        }
+
+        IEnumerator DelayedCoroutineC(IEnumerator c, float startDelay, float endDelay)
+        {
+            yield return new WaitForSeconds(startDelay);
+
+            yield return StartCoroutine(c);
+
+            yield return new WaitForSeconds(endDelay);
         }
     }
 }

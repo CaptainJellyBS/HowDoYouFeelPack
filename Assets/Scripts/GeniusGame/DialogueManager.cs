@@ -48,7 +48,7 @@ namespace HowDoYouFeel.GeniusGame
             for (int i = 0; i < dialogueText.Length; i++)
             {
                 char c = dialogueText[i];
-                float t = getCharWaitTime(c);
+                float t = GetCharWaitTime(c);
                 dialogueTextMesh.text = 
                     dialogueText.Substring(0, i + 1) 
                     + "<color=#00000000>"
@@ -65,8 +65,12 @@ namespace HowDoYouFeel.GeniusGame
             }
 
             dialogueTextMesh.text = dialogueText;
-            IEnumerator waiter = WaitForCoroutine(waitUntilCoroutine); //this is so stupid
-            for (float t = 0; t < waitUntilHide || waiter.MoveNext(); t+=Time.deltaTime)
+
+            //istg I'm going to stab someone so bad. I hate this this is stupid this is terrible pain pain pain incredible agony and pain.
+            bool[] waiter = new bool[] { false };
+            WaitForCoroutine(waitUntilCoroutine, waiter);
+
+            for (float t = 0; t < waitUntilHide || !waiter[0]; t+=Time.deltaTime)
             {
                 speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position), 10.0f * Time.deltaTime);
                 yield return null;
@@ -85,7 +89,7 @@ namespace HowDoYouFeel.GeniusGame
             dialogueRoutine = null;
         }
 
-        float getCharWaitTime(char c)
+        float GetCharWaitTime(char c)
         {
             switch(c)
             {
@@ -98,11 +102,29 @@ namespace HowDoYouFeel.GeniusGame
             }
         }
 
-        //pain, suffering, and agony
-        IEnumerator WaitForCoroutine(Coroutine c)
+        public float GetDialogueTime(string dialogue)
         {
-            if(c == null) { yield break; }
+            float time = 0.0f;
+            foreach(char c in dialogue)
+            {
+                time += GetCharWaitTime(c);
+            }
+
+            return time;
+        }
+
+        //WORSE pain, suffering, and agony. Incredibly stupid. I hate it I hate it I hate it.
+        void WaitForCoroutine(Coroutine c, bool[] b)
+        {
+            StartCoroutine(WaitForCoroutineC(c, b));
+        }
+
+        //pain, suffering, and agony
+        IEnumerator WaitForCoroutineC(Coroutine c, bool[] b)
+        {
+            if(c == null) { b[0] = true; yield break; }
             yield return c;
+            b[0] = true;
         }
 
         Vector3 CalculateSBPos(Vector3 targetPos)

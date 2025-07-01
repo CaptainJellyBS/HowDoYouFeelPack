@@ -11,7 +11,8 @@ namespace HowDoYouFeel.GeniusGame
         public float rotateSpeed = 720.0f;
         Queue<Transform> walkQueue;
         public Animator npcAnimator;
-        public UnityEvent onDestReached;
+        //public UnityEvent onDestReached;
+        public bool HasReachedDest { get; private set; }
 
         public void StartPathWalk()
         {
@@ -35,28 +36,33 @@ namespace HowDoYouFeel.GeniusGame
             }
         }
 
+        public void AddPath(NPC_Path path)
+        {
+            AddPath(path.path);
+        }
+
 
         IEnumerator PathWalkC()
         {
             walkQueue = new Queue<Transform>();
-            while(true)
+            while (true)
             {
-                npcAnimator.SetBool("IsWalking", walkQueue.Count > 0);
+                HasReachedDest = walkQueue.Count <= 0;
+                npcAnimator.SetBool("IsWalking", !HasReachedDest);
 
                 while (walkQueue.Count <= 0)
                 {
                     yield return null;
                 }
 
+                HasReachedDest = false;
                 npcAnimator.SetBool("IsWalking", true);
 
                 while (walkQueue.Count > 0)
                 {
                     Transform t = walkQueue.Dequeue();
                     yield return StartCoroutine(MoveToPointC(t));
-                }
-
-                onDestReached.Invoke();
+                }               
 
                 yield return null;
             }
@@ -66,7 +72,7 @@ namespace HowDoYouFeel.GeniusGame
         {
             //Rotate (over Y axis) to look at target
             Quaternion targetRot = Quaternion.LookRotation(
-                Vector3.Scale(target.position - transform.position, new Vector3(1, 0, 1)), Vector3.up) ;
+                Vector3.Scale(target.position - transform.position, new Vector3(1, 0, 1)), Vector3.up);
 
             while (Quaternion.Angle(transform.rotation, targetRot) > 5.0f)
             {
@@ -78,7 +84,7 @@ namespace HowDoYouFeel.GeniusGame
 
             //Walk to target
 
-            while(Vector3.Distance(transform.position, target.position) > 0.1f)
+            while (Vector3.Distance(transform.position, target.position) > 0.1f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
                 yield return null;
@@ -94,6 +100,33 @@ namespace HowDoYouFeel.GeniusGame
             }
 
             transform.rotation = target.rotation;
+        }
+
+        public Coroutine Jump(Transform startPoint, Transform endPoint, float height, float speed)
+        {
+            return Jump(startPoint.position, endPoint.position, height, speed);
+        }
+
+        public Coroutine Jump(Vector3 startPoint, Vector3 endPoint, float height, float speed)
+        {
+            return StartCoroutine(JumpC(startPoint, endPoint, height, speed));
+        }
+
+        IEnumerator JumpC(Vector3 startPoint, Vector3 endPoint, float height, float speed)
+        {
+            Vector3 control = startPoint + (endPoint - startPoint) / 2 + Vector3.up * height;
+
+            npcAnimator.SetBool("IsGrounded", false);
+            npcAnimator.SetTrigger("Jump");
+            for (float t = 0; t <= 1.0f; t+=Time.deltaTime * speed)
+            {
+                yield return null;
+                Vector3 m1 = Vector3.Lerp(startPoint, control, t);
+                Vector3 m2 = Vector3.Lerp(control, endPoint, t);
+
+                transform.position = Vector3.Lerp(m1, m2, t);
+            }
+            npcAnimator.SetBool("IsGrounded", true);
         }
     }
 }

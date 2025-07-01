@@ -25,16 +25,17 @@ namespace HowDoYouFeel.GeniusGame
 
         public UnityEvent onDone, onCorrect, onFail;
 
-        public Coroutine StartPlay()
+        public Coroutine StartPlay(float startDelay)
         {
             if(currentGame != null) { StopCoroutine(currentGame); }
             GenerateSequence();
-            currentGame = StartCoroutine(SimonSaysC());
+            currentGame = StartCoroutine(SimonSaysC(startDelay));
             return currentGame;
         }
 
-        IEnumerator SimonSaysC()
+        IEnumerator SimonSaysC(float startDelay)
         {
+            yield return new WaitForSeconds(startDelay);
             for (int i = 0; i < sequence.Count; i++)
             {
                 yield return new WaitForSeconds(elementLightTime + 1.0f);

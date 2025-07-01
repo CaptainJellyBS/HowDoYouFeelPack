@@ -37,16 +37,13 @@ namespace HowDoYouFeel.GeniusGame
 
             teacher.AddPath(teacherPathm1);
             teacherOnDest = false;
-            while (!teacherOnDest) { yield return null; }
+            yield return StartCoroutine(WaitForTeacherToReachDestC());
 
             doors[0].SetDoor(true);
             teacher.AddPath(teacherPath0);
             teacherOnDest = false;
 
-            while (!teacherOnDest)
-            {
-                yield return null;
-            }
+            yield return StartCoroutine(WaitForTeacherToReachDestC());
             teacherOnDest = false;
 
             yield return dm.PlayDialogue("Hello there! Thank you for waiting.", teacherDialoguePoint);
@@ -58,18 +55,14 @@ namespace HowDoYouFeel.GeniusGame
             
             yield return dm.PlayDialogue("Like this!", teacherDialoguePoint);
 
-            while(!teacherOnDest) { yield return null; }
+            yield return StartCoroutine(WaitForTeacherToReachDestC());
 
             yield return dm.PlayDialogue("Well done!", teacherDialoguePoint);
 
-            dm.PlayDialogue("Alright. Come with me!", teacherDialoguePoint);
-
-            yield return new WaitForSeconds(0.35f);
-
             teacher.AddPath(teacherPath2);
             teacherOnDest = false;
-
-            while (!teacherOnDest) { yield return null; }
+            Coroutine tc = StartCoroutine(WaitForTeacherToReachDestC());
+            yield return dm.PlayDialogue("Alright. Come with me!", teacherDialoguePoint, 2.0f, tc);
 
             yield return dm.PlayDialogue("This is a puzzle. Go do the puzzle!", teacherDialoguePoint);
 
@@ -78,6 +71,11 @@ namespace HowDoYouFeel.GeniusGame
             yield return dm.PlayDialogue("Well done omg!!!!!!!!", teacherDialoguePoint);
             doors[1].SetDoor(true);
 
+        }
+
+        IEnumerator WaitForTeacherToReachDestC()
+        {
+            while (!teacherOnDest) { yield return null; }
         }
 
         public void TeacherReachedDest()

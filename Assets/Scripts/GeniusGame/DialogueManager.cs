@@ -11,20 +11,20 @@ namespace HowDoYouFeel.GeniusGame
         public TextMeshProUGUI dialogueTextMesh;
         public float hidingHeight = 15.0f;
         public float characterLength = 0.2f;
-        public float waitUntilHide = 2.0f;
+        //public float waitUntilHide = 2.0f;
         public float hidingTime = 0.5f;
         public float pauseBetweenDialogue = 1.0f;
         Coroutine dialogueRoutine;
         public LayerMask speechBubbleBoxcastMask;
 
-        public Coroutine PlayDialogue(string dialogueText, Transform targetSpeaker)
+        public Coroutine PlayDialogue(string dialogueText, Transform targetSpeaker, float waitUntilHide = 2.0f, Coroutine waitUntilCoroutine = null)
         {
             if(dialogueRoutine != null) { StopCoroutine(dialogueRoutine); }
-            dialogueRoutine = StartCoroutine(PlayDialogueC(dialogueText, targetSpeaker));
+            dialogueRoutine = StartCoroutine(PlayDialogueC(dialogueText, targetSpeaker, waitUntilHide, waitUntilCoroutine));
             return dialogueRoutine;
         }
 
-        IEnumerator PlayDialogueC(string dialogueText, Transform targetSpeaker)
+        IEnumerator PlayDialogueC(string dialogueText, Transform targetSpeaker, float waitUntilHide, Coroutine waitUntilCoroutine)
         {
             dialogueTextMesh.text = string.Empty;
 
@@ -65,7 +65,8 @@ namespace HowDoYouFeel.GeniusGame
             }
 
             dialogueTextMesh.text = dialogueText;
-            for (float t = 0; t < waitUntilHide; t+=Time.deltaTime)
+            IEnumerator waiter = WaitForCoroutine(waitUntilCoroutine); //this is so stupid
+            for (float t = 0; t < waitUntilHide || waiter.MoveNext(); t+=Time.deltaTime)
             {
                 speechBubble.position = Vector3.MoveTowards(speechBubble.position, CalculateSBPos(targetSpeaker.position), 10.0f * Time.deltaTime);
                 yield return null;
@@ -95,6 +96,13 @@ namespace HowDoYouFeel.GeniusGame
                 case '!': return characterLength * 4.0f;
                 default: return characterLength;
             }
+        }
+
+        //pain, suffering, and agony
+        IEnumerator WaitForCoroutine(Coroutine c)
+        {
+            if(c == null) { yield break; }
+            yield return c;
         }
 
         Vector3 CalculateSBPos(Vector3 targetPos)

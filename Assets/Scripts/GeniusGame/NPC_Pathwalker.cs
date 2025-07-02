@@ -16,6 +16,8 @@ namespace HowDoYouFeel.GeniusGame
 
         public void StartPathWalk()
         {
+            Debug.LogWarning("Note to self: Implement some kind of functionality where an NPC waits for the player to come with them.");
+                //Can probably just be done in Sequencing with Triggers, tbh
             npcAnimator.SetBool("IsGrounded", true);
             StartCoroutine(PathWalkC());
         }

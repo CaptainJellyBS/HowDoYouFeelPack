@@ -33,7 +33,7 @@ namespace HowDoYouFeel.GeniusGame
         }
 
         [ContextMenu("Update Wall")]
-        void UpdateWall()
+        public void UpdateWall()
         {
             hidingObject = GetComponent<HidingObject>();
             UpdateRotation();
@@ -84,7 +84,7 @@ namespace HowDoYouFeel.GeniusGame
                 hidingObject.floor = floor;
                 hidingObject.animationType = animationType;
                 hidingObject.animValue = animationType == HidingAnimationType.Translation ?
-                    new Vector3(0.0f,30.0f,0.0f) :
+                    new Vector3(0.0f,50.0f,0.0f) :
                     new Vector3(-170.0f,0.0f,0.0f);
 
             foreach(GameObject g in wallConnectors)

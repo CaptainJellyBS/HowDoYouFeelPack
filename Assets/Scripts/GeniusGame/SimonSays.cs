@@ -111,18 +111,6 @@ namespace HowDoYouFeel.GeniusGame
                     j++;
                 }
             }
-
-            Debug.LogWarning("DEBUG ACTIVE");
-
-            for (int i = 0; i < sequence.Count; i++)
-            {
-                string s = string.Empty;
-                for (int j = 0; j < sequence[i].Length; j++)
-                {
-                    s += sequence[i][j] + " -> ";
-                }
-                Debug.Log(s);
-            }
         }
 
         bool EvaluateSequence(int[] correctSequence, int[] input)

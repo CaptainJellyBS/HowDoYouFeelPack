@@ -31609,7 +31609,7 @@ MonoBehaviour:
   speechBubble: {fileID: 973615786}
   dialogueTextMesh: {fileID: 1381839371}
   hidingHeight: 10
-  characterLength: 0.1
+  characterLength: 0.125
   hidingTime: 0.5
   pauseBetweenDialogue: 1
   speechBubbleBoxcastMask:

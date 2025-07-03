@@ -30,6 +30,7 @@ namespace HowDoYouFeel.GeniusGame
         Vector2 moveInput;        
         Quaternion targetRot;
         Interactible currentInteractible;
+        Interactible interactedInteractible; //Perfect name
 
         private void Awake()
         {
@@ -166,7 +167,14 @@ namespace HowDoYouFeel.GeniusGame
         void OnInteract(InputValue value)
         {
             if(currentInteractible == null) { return; }
-            currentInteractible.Interact();
+            animator.SetTrigger("Interact");
+            interactedInteractible = currentInteractible;
+        }
+
+        public void Interact()
+        {
+            interactedInteractible.Interact();
+            interactedInteractible = null;
         }
     }
 }

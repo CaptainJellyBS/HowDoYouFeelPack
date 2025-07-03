@@ -17,14 +17,14 @@ namespace HowDoYouFeel.GeniusGame
         Coroutine dialogueRoutine;
         public LayerMask speechBubbleBoxcastMask;
 
-        public Coroutine PlayDialogue(string dialogueText, Transform targetSpeaker, float waitUntilHide = 2.0f, Coroutine waitUntilCoroutine = null)
+        public Coroutine PlayDialogue(string dialogueText, Transform targetSpeaker, Animator characterAnimator = null, float waitUntilHide = 2.0f, Coroutine waitUntilCoroutine = null)
         {
             if(dialogueRoutine != null) { StopCoroutine(dialogueRoutine); }
-            dialogueRoutine = StartCoroutine(PlayDialogueC(dialogueText, targetSpeaker, waitUntilHide, waitUntilCoroutine));
+            dialogueRoutine = StartCoroutine(PlayDialogueC(dialogueText, targetSpeaker, waitUntilHide, waitUntilCoroutine, characterAnimator));
             return dialogueRoutine;
         }
 
-        IEnumerator PlayDialogueC(string dialogueText, Transform targetSpeaker, float waitUntilHide, Coroutine waitUntilCoroutine)
+        IEnumerator PlayDialogueC(string dialogueText, Transform targetSpeaker, float waitUntilHide, Coroutine waitUntilCoroutine, Animator characterAnimator)
         {
             dialogueTextMesh.text = string.Empty;
 
@@ -49,6 +49,7 @@ namespace HowDoYouFeel.GeniusGame
             {
                 char c = dialogueText[i];
                 float t = GetCharWaitTime(c);
+                if(characterAnimator != null) { AnimateCharacter(characterAnimator, c); }
                 dialogueTextMesh.text = 
                     dialogueText.Substring(0, i + 1) 
                     + "<color=#00000000>"
@@ -87,6 +88,19 @@ namespace HowDoYouFeel.GeniusGame
             yield return new WaitForSeconds(pauseBetweenDialogue);
 
             dialogueRoutine = null;
+        }
+
+        void AnimateCharacter(Animator animator, char c)
+        {
+            switch (c)
+            {
+                case ' ': 
+                case ',': 
+                case '.':
+                case '?':
+                case '!': return;
+                default: animator.SetTrigger("Talk"); return;
+            }
         }
 
         float GetCharWaitTime(char c)

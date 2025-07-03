@@ -15,6 +15,7 @@ namespace HowDoYouFeel.GeniusGame
         public Transform teacherDialoguePoint;
         public GameObject teacherPathsParent;
         [TextArea] public List<string> teacherDialogue;
+        public Animator teacherAnimator;
 
         public SimonSays simonSays;        
 
@@ -37,30 +38,30 @@ namespace HowDoYouFeel.GeniusGame
             doors[0].SetDoor(true);
             yield return WalkPath(teacher, teacherPaths[1]);
 
-            yield return dm.PlayDialogue(teacherDialogue[0], teacherDialoguePoint);
-            yield return dm.PlayDialogue(teacherDialogue[1], teacherDialoguePoint);
+            yield return dm.PlayDialogue(teacherDialogue[0], teacherDialoguePoint, teacherAnimator);
+            yield return dm.PlayDialogue(teacherDialogue[1], teacherDialoguePoint, teacherAnimator);
 
             Coroutine tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[2]), 1.0f, 0.0f);
                         
-            yield return dm.PlayDialogue(teacherDialogue[2], teacherDialoguePoint, 2.0f, tc);
+            yield return dm.PlayDialogue(teacherDialogue[2], teacherDialoguePoint, teacherAnimator, 2.0f, tc);
 
             tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[3]), dm.GetDialogueTime(teacherDialogue[3]) + 0.5f, 0.0f);
-            yield return dm.PlayDialogue(teacherDialogue[3], teacherDialoguePoint, 2.0f, tc);
+            yield return dm.PlayDialogue(teacherDialogue[3], teacherDialoguePoint, teacherAnimator, 2.0f, tc);
 
             yield return dm.PlayDialogue(teacherDialogue[4], teacherDialoguePoint);
 
             tc = simonSays.StartPlay(dm.GetDialogueTime(teacherDialogue[5]));
-            yield return dm.PlayDialogue(teacherDialogue[5], teacherDialoguePoint, 2.0f, tc);
+            yield return dm.PlayDialogue(teacherDialogue[5], teacherDialoguePoint, teacherAnimator, 2.0f, tc);
 
-            yield return dm.PlayDialogue(teacherDialogue[6], teacherDialoguePoint);
+            yield return dm.PlayDialogue(teacherDialogue[6], teacherDialoguePoint, teacherAnimator);
             doors[1].SetDoor(true);
 
             tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[4]), dm.GetDialogueTime(teacherDialogue[7]), 0.0f);
 
-            yield return dm.PlayDialogue(teacherDialogue[7], teacherDialoguePoint, 2.0f, tc);
+            yield return dm.PlayDialogue(teacherDialogue[7], teacherDialoguePoint, teacherAnimator, 2.0f, tc);
 
-            tc = teacher.Jump(teacherPaths[5].path[0], teacherPaths[5].path[1], 3.5f, 0.5f);
-            yield return dm.PlayDialogue(teacherDialogue[8], teacherDialoguePoint, 2.0f, tc);
+            tc = teacher.Jump(teacherPaths[5].path[0], teacherPaths[5].path[1], 4.5f, 0.5f);
+            yield return dm.PlayDialogue(teacherDialogue[8], teacherDialoguePoint, teacherAnimator, 2.0f, tc);
         }
 
         //surely we can refactor this in a way to make it NPC generic?

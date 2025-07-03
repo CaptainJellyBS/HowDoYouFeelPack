@@ -167,6 +167,7 @@ namespace HowDoYouFeel.GeniusGame
         void OnInteract(InputValue value)
         {
             if(currentInteractible == null) { return; }
+            if(interactedInteractible != null) { return; }
             animator.SetTrigger("Interact");
             interactedInteractible = currentInteractible;
         }

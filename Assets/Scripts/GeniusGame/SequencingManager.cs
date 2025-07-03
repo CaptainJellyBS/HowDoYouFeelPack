@@ -48,7 +48,7 @@ namespace HowDoYouFeel.GeniusGame
             tc = DelayedCoroutine(WalkPathC(teacher, teacherPaths[3]), dm.GetDialogueTime(teacherDialogue[3]) + 0.5f, 0.0f);
             yield return dm.PlayDialogue(teacherDialogue[3], teacherDialoguePoint, teacherAnimator, 2.0f, tc);
 
-            yield return dm.PlayDialogue(teacherDialogue[4], teacherDialoguePoint);
+            yield return dm.PlayDialogue(teacherDialogue[4], teacherDialoguePoint, teacherAnimator);
 
             tc = simonSays.StartPlay(dm.GetDialogueTime(teacherDialogue[5]));
             yield return dm.PlayDialogue(teacherDialogue[5], teacherDialoguePoint, teacherAnimator, 2.0f, tc);

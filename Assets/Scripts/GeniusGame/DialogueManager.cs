@@ -107,7 +107,7 @@ namespace HowDoYouFeel.GeniusGame
         {
             switch(c)
             {
-                case ' ': return characterLength/4.0f;
+                case ' ': return characterLength*1.25f;
                 case ',': return characterLength * 2.0f;
                 case '.':
                 case '?':

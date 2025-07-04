@@ -7,8 +7,7 @@ namespace HowDoYouFeel.GeniusGame
     public class SimonSaysElement : MonoBehaviour
     {
         public AudioSource activateAS;
-        public Material onMaterial, offMaterial;
-        public Renderer rendererToUpdate;
+        public GameObject lightObject;
         Coroutine cur;
 
         public void Activate(float time)
@@ -22,12 +21,12 @@ namespace HowDoYouFeel.GeniusGame
         {
             yield return new WaitForSeconds(startDelay);
 
-            rendererToUpdate.material = onMaterial;
+            lightObject.SetActive(true);
             activateAS.Play();
 
             yield return new WaitForSeconds(time);
 
-            rendererToUpdate.material = offMaterial;
+            lightObject.SetActive(false);
             activateAS.Stop();
 
             cur = null;
@@ -37,8 +36,8 @@ namespace HowDoYouFeel.GeniusGame
         {
             if(cur == null) { return; }
             StopCoroutine(cur);
+            lightObject.SetActive(false);
 
-            rendererToUpdate.material = offMaterial;
             activateAS.Stop();
 
             cur = null;
